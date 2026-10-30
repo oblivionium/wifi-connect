@@ -7,7 +7,7 @@ use zeroize::Zeroizing;
 #[command(name = "wifi", about = "Sign in to or out of the college Wi-Fi portal")]
 struct Cli {
     #[command(subcommand)]
-    command: Command,
+    command: Option<Command>,
 }
 
 #[derive(Subcommand)]
@@ -33,7 +33,7 @@ fn main() {
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
-    match Cli::parse().command {
+    match Cli::parse().command.unwrap_or(Command::Login) {
         Command::Login => {
             let credentials = load_credentials()?;
             Portal::new()?.login(&credentials.username, &credentials.password)?;

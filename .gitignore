@@ -15,8 +15,11 @@ secrets/
 target/
 node_modules/
 dist/
+!desktop/dist/
+!desktop/dist/**
 release/
 coverage/
+desktop/src-tauri/gen/
 
 # Signing keys and local OS/editor state
 *.p12

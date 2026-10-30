@@ -19,16 +19,23 @@ HTTP flow cannot be made reliable.
 The captured client code indicates that the portal prepends a per-session
 login token to the password, UTF-8 encodes it, uses randomized RSA PKCS#1 v1.5
 encryption, and reverses the ciphertext bytes in pairs before submission. The
-implementation must confirm each detail against the captured flow and verify
-success using the portal response, not HTTP status alone.
+implementation follows that flow and checks both the portal response and the
+authenticated session attributes. Live login and logout still need campus
+validation.
 
-## Planned user features
+The campus portal is accessed at `https://172.22.2.6/connect/PortalMain`.
+Captured successful browser sessions ignore its TLS certificate error, so the
+Rust client does the same for requests to this fixed portal origin. This allows
+the captive login flow to run but does not authenticate the server: an active
+network attacker could impersonate the portal and replace its RSA key.
+
+## User features
 
 - A short `wifi` command and a desktop/Start menu shortcut use the same login
   core.
-- A small settings window stores or updates the user's credentials in the
-  operating system credential store. The planned UI shell is Tauri so it can
-  reuse the Rust core without embedding a separate browser runtime in login.
+- A small Tauri settings window stores or updates the user's credentials in
+  the operating system credential store. The GUI calls the same Rust login
+  core as the CLI; portal login itself remains a direct HTTP/RSA flow.
 - A one-click logout uses the portal's logoff endpoint and verifies the
   resulting logged-out state.
 - Optional relogin runs every six hours, with a campus-network check and
@@ -41,12 +48,25 @@ Never commit credentials, secrets, HAR files, cookies, session tokens, local
 logs containing portal data, or signing keys. HAR files can include submitted
 passwords and active session data; `.gitignore` excludes them locally.
 
+The Linux `.deb` installs a Linux GUI application; it is not a Windows
+installer. It can run under WSL 2 with WSLg on supported Windows versions, but
+the Linux credential backend requires a running Secret Service provider such
+as GNOME Keyring. Minimal WSL Ubuntu installs may need that service configured
+before credentials can be saved. The package currently installs the settings
+GUI; the standalone `wifi` CLI is still packaged separately.
+
 ## Implementation status and next steps
 
 1. Portal request and RSA behavior have been analyzed from the local HARs.
-2. The initial Rust CLI, keyring storage, and HTTP/RSA login and logout paths
-   are in place; they still need live validation on the college network.
-3. Add the small credential settings UI, notifications, desktop shortcuts,
-   and optional six-hour scheduling on top of the same core.
+2. The Rust CLI, keyring storage, and HTTP/RSA login and logout paths compile.
+   The short `wifi` command logs in; `wifi login`, `wifi logout`, and
+   `wifi credentials set` remain available. The request sequence and response
+   fields match the captured traffic; live Rust login still needs campus
+   validation.
+3. The first Tauri settings window has credential save/update, connect, logout,
+   and native result notifications. A Linux release binary and Debian package
+   build successfully; the `.deb` is about 6.2 MiB and uses system GTK/WebKit.
+   Windows/macOS builds and visual validation remain; desktop shortcuts and
+   optional six-hour scheduling remain to be added.
 4. Package platform installers in CI and validate clean installs on Windows,
    macOS, and Linux before publishing releases.

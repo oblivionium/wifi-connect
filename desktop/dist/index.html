@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>College Wi-Fi</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="panel">
+      <header>
+        <div class="mark" aria-hidden="true">W</div>
+        <div>
+          <p class="eyebrow">NETWORK ACCESS</p>
+          <h1>College Wi-Fi</h1>
+        </div>
+      </header>
+
+      <section class="card" aria-labelledby="credentials-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="credentials-heading">Credentials</h2>
+            <p>Saved securely on this device.</p>
+          </div>
+          <span id="saved-badge" class="badge">Not set</span>
+        </div>
+        <form id="credentials-form">
+          <label for="username">College username</label>
+          <input id="username" name="username" autocomplete="username" required />
+          <label for="password">College password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" required />
+          <button class="secondary full" type="submit">Save credentials</button>
+        </form>
+      </section>
+
+      <section class="actions" aria-label="Connection actions">
+        <button id="connect" class="primary" type="button">Connect</button>
+        <button id="disconnect" class="secondary" type="button">Log out</button>
+      </section>
+
+      <p id="status" role="status" aria-live="polite">Ready.</p>
+      <footer>Connects through the college sign-in portal.</footer>
+    </main>
+  </body>
+</html>

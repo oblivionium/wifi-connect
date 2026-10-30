@@ -66,6 +66,11 @@ impl Portal {
         let client = Client::builder()
             .cookie_store(true)
             .timeout(Duration::from_secs(12))
+            // The campus portal is served at this private IP with a certificate
+            // that does not validate for the IP. The legacy client also ignored
+            // certificate errors. This client only sends requests to PORTAL.
+            // A hostile network gateway could still impersonate the portal.
+            .danger_accept_invalid_certs(true)
             .build()?;
         Ok(Self { client })
     }
@@ -74,7 +79,7 @@ impl Portal {
         self.open_portal()?;
 
         let settings: RsaSettings = self.post_json("RSASettings")?;
-        // Loading the portal state mirrors its lightweight AJAX setup before login.
+        // Captures show the client requesting RSA settings before loading view state.
         let _: serde_json::Value = self.post_json("GetStateAndView")?;
         let encrypted_password = encrypt_password(&settings, password)?;
         let response: LoginResponse = self
