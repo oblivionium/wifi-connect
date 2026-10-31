@@ -31,15 +31,20 @@ network attacker could impersonate the portal and replace its RSA key.
 
 ## User features
 
-- A short `wifi` command and a desktop/Start menu shortcut use the same login
-  core.
+- A short `wifi` command, a Linux application-menu shortcut, and a Windows Start
+  menu shortcut use the same login core. Shortcut launches run silently and
+  report the result through a native notification.
+- The settings window can create a one-click desktop shortcut on Linux,
+  Windows, and macOS.
 - A small Tauri settings window stores or updates the user's credentials in
   the operating system credential store. The GUI calls the same Rust login
   core as the CLI; portal login itself remains a direct HTTP/RSA flow.
 - A one-click logout uses the portal's logoff endpoint and verifies the
   resulting logged-out state.
-- Optional relogin runs every six hours, with a campus-network check and
-  bounded retry behavior.
+- Optional 5.5-hour relogin is configured through the OS scheduler: a user
+  systemd timer on Linux, Task Scheduler on Windows, or a LaunchAgent on macOS.
+- The settings window can enable or disable automatic relogin without asking
+  the user to re-enter credentials. Credentials remain in the OS keyring.
 - Native notifications report the result of a requested login or logout.
 
 ## Security and captures
@@ -63,10 +68,12 @@ GUI; the standalone `wifi` CLI is still packaged separately.
    `wifi credentials set` remain available. The request sequence and response
    fields match the captured traffic; live Rust login still needs campus
    validation.
-3. The first Tauri settings window has credential save/update, connect, logout,
-   and native result notifications. A Linux release binary and Debian package
-   build successfully; the `.deb` is about 6.2 MiB and uses system GTK/WebKit.
-   Windows/macOS builds and visual validation remain; desktop shortcuts and
-   optional six-hour scheduling remain to be added.
+3. The Tauri settings window has credential save/update, connect, logout,
+   native result notifications, an opt-in 5.5-hour relogin toggle, and a
+   cross-platform desktop-shortcut action. Linux and Windows installers also
+   include a separate silent connect shortcut. The app binary supports
+   `--connect` and `--disconnect` for platform launchers. The Debian package
+   uses system GTK/WebKit; Windows/macOS installer behavior still needs
+   validation on those operating systems.
 4. Package platform installers in CI and validate clean installs on Windows,
    macOS, and Linux before publishing releases.

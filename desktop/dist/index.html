@@ -35,6 +35,17 @@
         </form>
       </section>
 
+      <section class="card preferences" aria-labelledby="preferences-heading">
+        <label class="toggle-row" for="auto-relogin">
+          <span>
+            <strong id="preferences-heading">Automatic relogin</strong>
+            <small>Reconnect every 5.5 hours while you’re signed in.</small>
+          </span>
+          <input id="auto-relogin" type="checkbox" />
+        </label>
+        <button id="create-shortcut" class="secondary shortcut-button" type="button">Create one-click desktop shortcut</button>
+      </section>
+
       <section class="actions" aria-label="Connection actions">
         <button id="connect" class="primary" type="button">Connect</button>
         <button id="disconnect" class="secondary" type="button">Log out</button>

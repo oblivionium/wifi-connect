@@ -1,5 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod schedule;
+
+use tauri::{Manager, Wry};
+use tauri_plugin_notification::NotificationExt;
+
 #[tauri::command]
 fn credentials_saved() -> bool {
     wifi::load_credentials().is_ok()
@@ -39,15 +44,79 @@ fn disconnect() -> Result<(), String> {
     portal.logout().map_err(|error| error.to_string())
 }
 
+#[tauri::command]
+fn auto_relogin_enabled() -> bool {
+    schedule::enabled()
+}
+
+#[tauri::command]
+fn set_auto_relogin(enabled: bool) -> Result<(), String> {
+    if enabled && wifi::load_credentials().is_err() {
+        return Err("Save your credentials before enabling automatic relogin.".into());
+    }
+    schedule::set_enabled(enabled)
+}
+
+#[tauri::command]
+fn create_connect_shortcut() -> Result<(), String> {
+    if wifi::load_credentials().is_err() {
+        return Err("Save your credentials before creating a connect shortcut.".into());
+    }
+    schedule::create_connect_shortcut()
+}
+
+fn connect_once() -> Result<(), String> {
+    let credentials = wifi::load_credentials().map_err(|error| error.to_string())?;
+    let portal = wifi::Portal::new().map_err(|error| error.to_string())?;
+    portal
+        .login(&credentials.username, &credentials.password)
+        .map_err(|error| error.to_string())
+}
+
+fn notify(app: &tauri::AppHandle<Wry>, title: &str, body: &str) {
+    let _ = app.notification().builder().title(title).body(body).show();
+}
+
 fn main() {
+    let action = std::env::args().skip(1).find_map(|arg| match arg.as_str() {
+        "--connect" => Some(true),
+        "--disconnect" => Some(false),
+        _ => None,
+    });
+
     tauri::Builder::default()
         .plugin(tauri_plugin_notification::init())
+        .setup(move |app| {
+            if let Some(connecting) = action {
+                let result = if connecting {
+                    connect_once().map(|_| "Connected to college Wi-Fi.")
+                } else {
+                    disconnect().map(|_| "Signed out of college Wi-Fi.")
+                };
+                let succeeded = result.is_ok();
+                match result {
+                    Ok(message) => notify(app.handle(), "College Wi-Fi", message),
+                    Err(error) => notify(
+                        app.handle(),
+                        "College Wi-Fi",
+                        &format!("Connection failed: {error}"),
+                    ),
+                };
+                app.handle().exit(if succeeded { 0 } else { 1 });
+            } else if let Some(window) = app.get_webview_window("main") {
+                window.show()?;
+            }
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             credentials_saved,
             current_username,
             save_credentials,
             connect,
-            disconnect
+            disconnect,
+            auto_relogin_enabled,
+            set_auto_relogin,
+            create_connect_shortcut
         ])
         .run(tauri::generate_context!())
         .expect("failed to start College Wi-Fi settings");

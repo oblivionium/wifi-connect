@@ -12,7 +12,8 @@
       {
         "title": "College Wi-Fi Settings",
         "width": 460,
-        "height": 560,
+        "height": 630,
+        "visible": false,
         "resizable": false
       }
     ],
@@ -23,6 +24,18 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "category": "Utility"
+    "category": "Utility",
+    "linux": {
+      "deb": {
+        "files": {
+          "/usr/share/applications/college-wifi-connect.desktop": "resources/college-wifi-connect.desktop"
+        }
+      }
+    },
+    "windows": {
+      "nsis": {
+        "installerHooks": "resources/windows-shortcut.nsh"
+      }
+    }
   }
 }
