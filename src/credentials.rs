@@ -19,7 +19,12 @@ pub enum CredentialError {
 }
 
 fn entry(account: &str) -> Result<Entry, CredentialError> {
-    Entry::new(SERVICE, account).map_err(CredentialError::Store)
+    #[cfg(target_os = "linux")]
+    let entry = Entry::new_with_target(SERVICE, SERVICE, account);
+    #[cfg(not(target_os = "linux"))]
+    let entry = Entry::new(SERVICE, account);
+
+    entry.map_err(CredentialError::Store)
 }
 
 pub fn load_credentials() -> Result<Credentials, CredentialError> {

@@ -66,6 +66,10 @@ impl Portal {
         let client = Client::builder()
             .cookie_store(true)
             .timeout(Duration::from_secs(12))
+            // The portal's web server returns a generic HTTP 500 for reqwest's
+            // default user agent. Its normal browser flow succeeds with a
+            // browser-style user agent.
+            .user_agent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
             // The campus portal is served at this private IP with a certificate
             // that does not validate for the IP. The legacy client also ignored
             // certificate errors. This client only sends requests to PORTAL.
