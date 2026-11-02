@@ -31,26 +31,40 @@ fn save_credentials(username: String, password: String) -> Result<(), String> {
 }
 
 #[tauri::command]
-fn connect() -> Result<(), String> {
-    let credentials = wifi::load_credentials().map_err(|error| error.to_string())?;
-    let portal = wifi::Portal::new().map_err(|error| error.to_string())?;
-    portal
-        .login(&credentials.username, &credentials.password)
-        .map_err(|error| error.to_string())
+async fn connect() -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(|| {
+        let credentials = wifi::load_credentials().map_err(|error| error.to_string())?;
+        let portal = wifi::Portal::new().map_err(|error| error.to_string())?;
+        portal
+            .login(&credentials.username, &credentials.password)
+            .map_err(|error| error.to_string())
+    })
+    .await
+    .map_err(|error| format!("Connection worker stopped unexpectedly: {error}"))?
 }
 
 #[tauri::command]
-fn disconnect() -> Result<(), String> {
+async fn disconnect() -> Result<(), String> {
+    tauri::async_runtime::spawn_blocking(disconnect_once)
+    .await
+    .map_err(|error| format!("Disconnect worker stopped unexpectedly: {error}"))?
+}
+
+fn disconnect_once() -> Result<(), String> {
     let portal = wifi::Portal::new().map_err(|error| error.to_string())?;
     portal.logout().map_err(|error| error.to_string())
 }
 
 #[tauri::command]
-fn portal_authenticated() -> Result<bool, String> {
-    wifi::Portal::new()
-        .map_err(|error| error.to_string())?
-        .authenticated()
-        .map_err(|error| error.to_string())
+async fn portal_authenticated() -> Result<bool, String> {
+    tauri::async_runtime::spawn_blocking(|| {
+        wifi::Portal::new()
+            .map_err(|error| error.to_string())?
+            .authenticated()
+            .map_err(|error| error.to_string())
+    })
+    .await
+    .map_err(|error| format!("Portal status worker stopped unexpectedly: {error}"))?
 }
 
 #[tauri::command]
@@ -110,7 +124,7 @@ fn main() {
                 let result = if connecting {
                     connect_once().map(|_| "Connected to college Wi-Fi.")
                 } else {
-                    disconnect().map(|_| "Signed out of college Wi-Fi.")
+                    disconnect_once().map(|_| "Signed out of college Wi-Fi.")
                 };
                 let succeeded = result.is_ok();
                 if preferences::notifications_enabled(app.handle()) {
