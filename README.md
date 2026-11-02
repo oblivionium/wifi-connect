@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/college-wifi-mark.svg" width="112" alt="College Wi-Fi mark" />
+<img src="desktop/dist/wifi-mark.png" width="112" alt="College Wi-Fi mark" />
 
 # College Wi-Fi
 
@@ -173,5 +173,6 @@ macOS disk image builds in macOS CI. Portal login was previously validated on
 the campus network through the CLI; notification popups and portal login still
 need hands-on validation on each target operating system.
 
+The app and repository use the green Wi-Fi mark from `legacy/windows/wifi.ico`.
 The README structure follows the
 [Awesome README Template](https://github.com/Louis3797/awesome-readme-template).

@@ -67,7 +67,14 @@ fn macos_shortcut() -> Result<(), String> {
     let contents = app.join("Contents");
     let binary = contents.join("MacOS/ConnectWiFi");
     fs::create_dir_all(binary.parent().unwrap()).map_err(|e| e.to_string())?;
-    fs::write(contents.join("Info.plist"), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>ConnectWiFi</string><key>CFBundleIdentifier</key><string>edu.lnmiit.college-wifi.connect</string><key>CFBundleName</key><string>Connect to College Wi-Fi</string><key>CFBundlePackageType</key><string>APPL</string></dict></plist>\n").map_err(|e| e.to_string())?;
+    let resources = contents.join("Resources");
+    fs::create_dir_all(&resources).map_err(|e| e.to_string())?;
+    fs::write(
+        resources.join("icon.icns"),
+        include_bytes!("../icons/icon.icns"),
+    )
+    .map_err(|e| e.to_string())?;
+    fs::write(contents.join("Info.plist"), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>ConnectWiFi</string><key>CFBundleIdentifier</key><string>edu.lnmiit.college-wifi.connect</string><key>CFBundleName</key><string>Connect to College Wi-Fi</string><key>CFBundleIconFile</key><string>icon.icns</string><key>CFBundlePackageType</key><string>APPL</string></dict></plist>\n").map_err(|e| e.to_string())?;
     let exe = executable.to_string_lossy().replace('\'', "'\\''");
     fs::write(&binary, format!("#!/bin/sh\nexec '{exe}' --connect\n"))
         .map_err(|e| e.to_string())?;
