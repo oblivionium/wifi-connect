@@ -34,12 +34,18 @@ jobs:
       - name: Package CLI in PATH with the macOS app
         shell: bash
         run: |
+          set -euo pipefail
           app_version=$(node -p "require('./desktop/package.json').version")
-          app_path="desktop/src-tauri/target/release/bundle/macos/Wi-Fi Connect.app"
+          dmg_path=$(find desktop/src-tauri/target/release/bundle/dmg -maxdepth 1 -name '*.dmg' -print -quit)
           package_root="$RUNNER_TEMP/wifi-connect-pkgroot"
+          mount_dir="$RUNNER_TEMP/wifi-connect-dmg"
           package_dir="desktop/src-tauri/target/release/bundle/pkg"
-          mkdir -p "$package_root/Applications" "$package_root/usr/local/bin" "$package_dir"
-          ditto "$app_path" "$package_root/Applications/Wi-Fi Connect.app"
+          mkdir -p "$package_root/Applications" "$package_root/usr/local/bin" "$package_dir" "$mount_dir"
+          hdiutil attach "$dmg_path" -readonly -nobrowse -mountpoint "$mount_dir"
+          trap 'hdiutil detach "$mount_dir" -quiet || true' EXIT
+          ditto "$mount_dir/Wi-Fi Connect.app" "$package_root/Applications/Wi-Fi Connect.app"
+          hdiutil detach "$mount_dir" -quiet
+          trap - EXIT
           install -m 755 desktop/src-tauri/binaries/wifi "$package_root/usr/local/bin/wifi"
           pkgbuild --root "$package_root" --install-location / \
             --identifier edu.lnmiit.college-wifi.install \
