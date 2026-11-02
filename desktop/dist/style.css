@@ -37,12 +37,12 @@ main { display: grid; min-height: calc(100vh - 72px); place-items: center; paddi
 @keyframes page-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 .home-page { display: flex; flex-direction: column; align-items: center; gap: 23px; }
 .connection-toggle { -webkit-appearance: none; appearance: none; display: grid; place-items: center; width: 156px; height: 156px; padding: 0; border: 0; border-radius: 50%; outline: 0; background: transparent; box-shadow: none; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .16s ease-out; }
-.connection-toggle:hover .toggle-track { box-shadow: inset 0 2px 7px #0004, 0 10px 28px #0003, 0 0 22px #d3f5b018; }
-.connection-toggle:focus-visible { box-shadow: 0 0 0 3px #d3f5b044; }
+.connection-toggle:hover { transform: scale(1.025); }
+.connection-toggle:focus-visible { outline: 2px solid #d3f5b0; outline-offset: 5px; }
 .connection-toggle:active { transform: scale(.975); }
-.toggle-track { display: grid; place-items: center; width: 132px; height: 132px; border-radius: 50%; background: #343c35; box-shadow: inset 0 2px 7px #0004, 0 10px 28px #0003; transition: background .16s ease-out, box-shadow .16s ease-out; }
+.toggle-track { display: grid; place-items: center; width: 132px; height: 132px; border-radius: 50%; background: #343c35; transition: background .18s ease-out; }
 .power-mark { width: 40px; height: 40px; fill: none; stroke: #adb7ac; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .16s ease-out, transform .16s ease-out; }
-.connection-toggle[aria-checked="true"] .toggle-track { background: var(--lime); box-shadow: inset 0 1px 2px #ffffff66, 0 0 34px #d3f5b043, 0 12px 30px #0003; }
+.connection-toggle[aria-checked="true"] .toggle-track { background: var(--lime); }
 .connection-toggle[aria-checked="true"] .power-mark { stroke: #182116; transform: scale(1.04); }
 .connection-toggle.state-change[aria-checked="true"] .toggle-track { animation: power-on .3s cubic-bezier(.2,.8,.25,1); }
 .connection-toggle.state-change[aria-checked="false"] .toggle-track { animation: power-off .22s ease-out; }
