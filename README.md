@@ -1,85 +1,177 @@
+<div align="center">
+
+<img src="assets/college-wifi-mark.svg" width="112" alt="College Wi-Fi mark" />
+
 # College Wi-Fi
 
-Cross-platform, one-click login and logout for the college captive portal.
+One click to sign in to the campus network.
 
-This is a clean rebuild. The former Windows/Playwright project and HAR captures
-are retained under the local, gitignored `archive/` folder as reference only.
-The sanitized, publishable Windows source snapshot is in `legacy/windows/`.
+[![Rust](https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![Tauri](https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/Oblivionium/wifi/actions)
 
-## Login design
+[Features](#features) · [Install](#installation) · [Usage](#usage) · [Security](#security)
 
-The connection path is a single lightweight HTTP flow. It loads the portal,
-requests fresh RSA settings, encrypts the password using the portal's
-client-side algorithm, submits the login request, and verifies authentication
-through the portal attributes endpoint. The CLI core is written in Rust with
-`reqwest` and `rsa`; it does not launch or bundle a browser engine. A browser
-fallback is out of scope unless cross-platform stability testing proves the
-HTTP flow cannot be made reliable.
+</div>
 
-The captured client code indicates that the portal prepends a per-session
-login token to the password, UTF-8 encodes it, uses randomized RSA PKCS#1 v1.5
-encryption, and reverses the ciphertext bytes in pairs before submission. The
-implementation follows that flow and checks both the portal response and the
-authenticated session attributes. Live login and logout still need campus
-validation.
+College Wi-Fi signs in to the campus captive portal on Windows, macOS, and
+Linux. The Rust client follows the portal’s HTTP and RSA login flow directly;
+the desktop application uses the operating system’s webview and does not bundle
+a browser engine.
 
-The campus portal is accessed at `https://172.22.2.6/connect/PortalMain`.
-Captured successful browser sessions ignore its TLS certificate error, so the
-Rust client does the same for requests to this fixed portal origin. This allows
-the captive login flow to run but does not authenticate the server: an active
-network attacker could impersonate the portal and replace its RSA key.
+## Contents
 
-## User features
+- [Features](#features)
+- [Technology](#technology)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Build from source](#build-from-source)
+- [Security](#security)
+- [Project layout](#project-layout)
+- [Status](#status)
 
-- A short `wifi` command, a Linux application-menu shortcut, and a Windows Start
-  menu shortcut use the same login core. Shortcut launches run silently and
-  report the result through a native notification.
-- The settings window can create a one-click desktop shortcut on Linux,
-  Windows, and macOS.
-- A small Tauri settings window stores or updates the user's credentials in
-  the operating system credential store. The GUI calls the same Rust login
-  core as the CLI; portal login itself remains a direct HTTP/RSA flow.
-- A one-click logout uses the portal's logoff endpoint and verifies the
-  resulting logged-out state.
-- Optional 5.5-hour relogin is configured through the OS scheduler: a user
-  systemd timer on Linux, Task Scheduler on Windows, or a LaunchAgent on macOS.
-- The settings window can enable or disable automatic relogin without asking
-  the user to re-enter credentials. Credentials remain in the OS keyring.
-- Native Windows, macOS, and Linux notifications report success or failure for
-  manual connections, shortcuts, and scheduled relogins. Notifications can be
-  disabled in Settings.
-- The dark settings app opens to a large Connect action. Credentials and
-  preferences are separate pages, reached through an animated navigation
-  drawer and a settings button.
+## Features
 
-## Security and captures
+- One-click connection from the desktop app or a silent desktop shortcut.
+- Credential entry and updates in a separate settings page; passwords are kept
+  in the system credential store.
+- Native notifications for successful and failed connection requests, including
+  scheduled relogins. Notifications can be disabled in Settings.
+- Optional automatic relogin every 5.5 hours.
+- Logout through the portal’s logoff endpoint.
+- `wifi` command-line login, logout, and credential setup.
 
-Never commit credentials, secrets, HAR files, cookies, session tokens, local
-logs containing portal data, or signing keys. HAR files can include submitted
-passwords and active session data; `.gitignore` excludes them locally.
+## Technology
 
-The Linux `.deb` installs a Linux GUI application; it is not a Windows
-installer. It can run under WSL 2 with WSLg on supported Windows versions, but
-the Linux credential backend requires a running Secret Service provider such
-as GNOME Keyring. Minimal WSL Ubuntu installs may need that service configured
-before credentials can be saved. The package currently installs the settings
-GUI; the standalone `wifi` CLI is still packaged separately.
+<div align="center">
 
-## Implementation status and next steps
+<a href="https://www.rust-lang.org/"><img alt="Rust" height="38" src="https://img.shields.io/badge/Rust-CE422B?style=for-the-badge&logo=rust&logoColor=white"></a>
+<a href="https://tauri.app/"><img alt="Tauri 2" height="38" src="https://img.shields.io/badge/Tauri_2-24C8DB?style=for-the-badge&logo=tauri&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img alt="HTML" height="38" src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><img alt="CSS" height="38" src="https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img alt="JavaScript" height="38" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111"></a>
+<a href="https://github.com/seanmonstar/reqwest"><img alt="reqwest" height="38" src="https://img.shields.io/badge/reqwest-HTTP_client-59636E?style=for-the-badge"></a>
+<a href="https://github.com/RustCrypto/RSA"><img alt="RustCrypto RSA" height="38" src="https://img.shields.io/badge/RustCrypto-RSA-59636E?style=for-the-badge"></a>
 
-1. Portal request and RSA behavior have been analyzed from the local HARs.
-2. The Rust CLI, keyring storage, and HTTP/RSA login and logout paths compile.
-   The short `wifi` command logs in; `wifi login`, `wifi logout`, and
-   `wifi credentials set` remain available. The request sequence and response
-   fields match the captured traffic; live Rust login still needs campus
-   validation.
-3. The Tauri settings window has credential save/update, connect, logout,
-   native result notifications with a disable preference, a dark multi-page
-   settings UI, an opt-in 5.5-hour relogin toggle, and a cross-platform
-   desktop-shortcut action. Linux and Windows installers also
-   include a separate silent connect shortcut. The app binary supports
-   `--connect` and `--disconnect` for platform launchers. The Debian package
-   uses system GTK/WebKit; Windows/macOS installer behavior still needs
-   validation on those operating systems.
-4. Package platform installers in CI and validate clean installs on Windows,
-   macOS, and Linux before publishing releases.
+</div>
+
+The UI is plain HTML, CSS, and JavaScript. Tauri provides the native window,
+system notifications, and platform packaging. The Rust core uses `reqwest` for
+the portal session and `rsa` for password encryption.
+
+## Installation
+
+Install the package for your operating system from the project’s
+[GitHub Actions artifacts](https://github.com/Oblivionium/wifi/actions). The
+workflow currently produces a Linux Debian package, a Windows NSIS installer,
+and a macOS disk image. CI artifacts are build outputs; they are not GitHub
+Releases.
+
+### Linux and WSL 2
+
+Install the `.deb` package:
+
+```sh
+sudo apt install ./College\ Wi-Fi_0.1.0_amd64.deb
+```
+
+WSL requires WSLg for the desktop window and a running Secret Service provider
+such as GNOME Keyring for secure credential storage. Linux keyring credentials
+are separate from Windows credentials.
+
+### Windows
+
+Run `College Wi-Fi_0.1.0_x64-setup.exe`. The installer adds a Start menu
+shortcut for opening Settings and a separate **Connect to College Wi-Fi**
+shortcut for silent connection.
+
+### macOS
+
+Open the downloaded `.dmg` and move College Wi-Fi to Applications. The app can
+create a one-click desktop shortcut from Settings.
+
+## Usage
+
+1. Open College Wi-Fi and visit **Credentials** from the navigation menu.
+2. Enter your college username and password, then save them.
+3. Return to the main page and press **Connect**.
+4. Use the top-right settings control to enable notifications or 5.5-hour
+   automatic relogin.
+
+The desktop shortcut and platform launcher connect without opening the settings
+window. Connection results appear as native notifications when notifications
+are enabled and allowed by the operating system.
+
+The CLI supports:
+
+```sh
+wifi login
+wifi logout
+wifi credentials set
+```
+
+The desktop app binary also accepts `--connect` and `--disconnect`; those modes
+are used by the platform shortcuts and schedulers.
+
+## Build from source
+
+### Requirements
+
+- Rust stable and Cargo
+- Node.js 22 or later and npm
+- Tauri’s platform dependencies: GTK/WebKitGTK on Linux, Microsoft C++ Build
+  Tools and WebView2 on Windows, and Xcode command-line tools on macOS
+- NSIS to build the Windows installer
+
+Build the Rust CLI/core:
+
+```sh
+cargo build --release
+```
+
+Build the desktop installer from `desktop/`:
+
+```sh
+npm ci
+npm run tauri -- build
+```
+
+Installers are written under `desktop/src-tauri/target/release/bundle/`.
+GitHub Actions builds and smoke-checks the Windows installer and packages
+Windows and macOS installers on their native runners.
+
+## Security
+
+Credentials are stored in the operating system’s credential store. Do not put
+credentials, session cookies, HAR captures, local logs, or signing keys in the
+repository. The local `archive/` directory is ignored by Git and must remain
+private.
+
+The campus portal is accessed at
+`https://172.22.2.6/connect/PortalMain`. Its certificate is not valid for the
+private IP address, so the client currently accepts the portal’s certificate
+without validation. This allows the login flow to work but does not verify the
+server’s identity; a network attacker could impersonate the portal.
+
+## Project layout
+
+| Path | Purpose |
+| --- | --- |
+| `src/portal.rs` | HTTP session, RSA login, logout, and session verification |
+| `src/credentials.rs` | OS credential-store integration |
+| `src/main.rs` | `wifi` command-line interface |
+| `desktop/dist/` | Desktop interface assets |
+| `desktop/src-tauri/` | Native commands, notifications, scheduling, and installers |
+| `legacy/windows/` | Sanitized historical Windows reference |
+
+## Status
+
+The Linux package builds locally. Windows installer generation, installation,
+shortcut configuration, and silent launch are smoke-tested in Windows CI. The
+macOS disk image builds in macOS CI. Portal login was previously validated on
+the campus network through the CLI; notification popups and portal login still
+need hands-on validation on each target operating system.
+
+The README structure follows the
+[Awesome README Template](https://github.com/Louis3797/awesome-readme-template).
