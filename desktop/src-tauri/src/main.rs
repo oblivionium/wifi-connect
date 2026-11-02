@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod preferences;
 mod schedule;
 
 use tauri::{Manager, Wry};
@@ -50,6 +51,16 @@ fn auto_relogin_enabled() -> bool {
 }
 
 #[tauri::command]
+fn notifications_enabled(app: tauri::AppHandle<Wry>) -> bool {
+    preferences::notifications_enabled(&app)
+}
+
+#[tauri::command]
+fn set_notifications_enabled(app: tauri::AppHandle<Wry>, enabled: bool) -> Result<(), String> {
+    preferences::set_notifications_enabled(&app, enabled)
+}
+
+#[tauri::command]
 fn set_auto_relogin(enabled: bool) -> Result<(), String> {
     if enabled && wifi::load_credentials().is_err() {
         return Err("Save your credentials before enabling automatic relogin.".into());
@@ -94,14 +105,16 @@ fn main() {
                     disconnect().map(|_| "Signed out of college Wi-Fi.")
                 };
                 let succeeded = result.is_ok();
-                match result {
-                    Ok(message) => notify(app.handle(), "College Wi-Fi", message),
-                    Err(error) => notify(
-                        app.handle(),
-                        "College Wi-Fi",
-                        &format!("Connection failed: {error}"),
-                    ),
-                };
+                if preferences::notifications_enabled(app.handle()) {
+                    match result {
+                        Ok(message) => notify(app.handle(), "College Wi-Fi", message),
+                        Err(error) => notify(
+                            app.handle(),
+                            "College Wi-Fi",
+                            &format!("Connection failed: {error}"),
+                        ),
+                    };
+                }
                 app.handle().exit(if succeeded { 0 } else { 1 });
             } else if let Some(window) = app.get_webview_window("main") {
                 window.show()?;
@@ -116,7 +129,9 @@ fn main() {
             disconnect,
             auto_relogin_enabled,
             set_auto_relogin,
-            create_connect_shortcut
+            create_connect_shortcut,
+            notifications_enabled,
+            set_notifications_enabled
         ])
         .run(tauri::generate_context!())
         .expect("failed to start College Wi-Fi settings");

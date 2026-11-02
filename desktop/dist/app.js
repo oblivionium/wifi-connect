@@ -1,100 +1,166 @@
 const invoke = window.__TAURI__.core.invoke;
 const notification = window.__TAURI__.notification;
+const menu = document.querySelector("#side-menu");
+const scrim = document.querySelector("#scrim");
+const menuButton = document.querySelector("#menu-button");
+const pages = [...document.querySelectorAll(".page")];
+const navLinks = [...document.querySelectorAll("[data-page]")];
 const form = document.querySelector("#credentials-form");
 const usernameField = document.querySelector("#username");
 const passwordField = document.querySelector("#password");
-const status = document.querySelector("#status");
 const badge = document.querySelector("#saved-badge");
+const summary = document.querySelector("#credential-summary");
+const credentialStatus = document.querySelector("#credentials-status");
+const settingsStatus = document.querySelector("#settings-status");
+const status = document.querySelector("#status");
+const notificationToggle = document.querySelector("#notifications-toggle");
 const autoRelogin = document.querySelector("#auto-relogin");
-const shortcutButton = document.querySelector("#create-shortcut");
 const actionButtons = [document.querySelector("#connect"), document.querySelector("#disconnect")];
+let notificationsEnabled = true;
 
-function showStatus(message, failed = false) {
-  status.textContent = message;
-  status.classList.toggle("error", failed);
+function showStatus(target, message, failed = false) {
+  target.textContent = message;
+  target.classList.toggle("error", failed);
+}
+
+function openMenu(open) {
+  menu.classList.toggle("open", open);
+  scrim.classList.toggle("visible", open);
+  menu.setAttribute("aria-hidden", String(!open));
+  menuButton.setAttribute("aria-expanded", String(open));
+}
+
+function showPage(name) {
+  pages.forEach((page) => {
+    const active = page.id === `page-${name}`;
+    page.hidden = !active;
+    page.classList.toggle("active", active);
+  });
+  document.querySelectorAll(".menu-link").forEach((link) => link.classList.toggle("active", link.dataset.page === name));
+  openMenu(false);
 }
 
 async function notify(title, body) {
+  if (!notificationsEnabled) return;
   try {
     let permitted = await notification.isPermissionGranted();
     if (!permitted) permitted = (await notification.requestPermission()) === "granted";
-    if (permitted) notification.sendNotification({ title, body });
+    if (permitted) {
+      await notification.sendNotification({ title, body });
+    }
   } catch (_) {
-    // The in-app status remains available when system notifications are disabled.
+    // The in-app result remains visible if OS notifications are unavailable.
   }
 }
 
 async function refreshCredentials() {
-  const [saved, username] = await Promise.all([
-    invoke("credentials_saved"),
-    invoke("current_username"),
-  ]);
+  const [saved, username] = await Promise.all([invoke("credentials_saved"), invoke("current_username")]);
   badge.textContent = saved ? "Saved" : "Not set";
   badge.classList.toggle("is-saved", saved);
+  summary.textContent = saved ? `Saved account${username ? ` · ${username}` : ""}` : "Credentials not saved";
   if (username) usernameField.value = username;
+  actionButtons[0].disabled = !saved;
+  actionButtons[1].disabled = false;
 }
+
+menuButton.addEventListener("click", () => openMenu(!menu.classList.contains("open")));
+scrim.addEventListener("click", () => openMenu(false));
+navLinks.forEach((link) => link.addEventListener("click", () => showPage(link.dataset.page)));
+document.querySelector("#settings-button").addEventListener("click", () => showPage("settings"));
+document.addEventListener("keydown", (event) => { if (event.key === "Escape") openMenu(false); });
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const username = usernameField.value.trim();
-  const password = passwordField.value;
   try {
-    await invoke("save_credentials", { username, password });
+    await invoke("save_credentials", { username: usernameField.value.trim(), password: passwordField.value });
     passwordField.value = "";
     await refreshCredentials();
-    showStatus("Credentials saved in your device’s secure credential store.");
+    showStatus(credentialStatus, "Credentials saved securely on this device.");
   } catch (error) {
-    showStatus(String(error), true);
+    showStatus(credentialStatus, String(error), true);
   }
 });
 
-async function runAction(button, command, successMessage) {
-  actionButtons.forEach((item) => { item.disabled = true; });
-  showStatus("Working…");
+async function runAction(command, successMessage) {
+  actionButtons.forEach((button) => { button.disabled = true; });
+  showStatus(status, "Contacting the sign-in portal…");
   try {
     await invoke(command);
-    showStatus(successMessage);
+    showStatus(status, successMessage);
     await notify("College Wi-Fi", successMessage);
   } catch (error) {
-    showStatus(String(error), true);
-    await notify("College Wi-Fi", `Connection request failed: ${String(error)}`);
+    showStatus(status, String(error), true);
+    await notify("College Wi-Fi", `Request failed: ${String(error)}`);
   } finally {
-    actionButtons.forEach((item) => { item.disabled = false; });
+    await refreshCredentials().catch(() => {});
   }
 }
 
-actionButtons[0].addEventListener("click", (event) => runAction(event.currentTarget, "connect", "Connected to college Wi-Fi."));
-actionButtons[1].addEventListener("click", (event) => runAction(event.currentTarget, "disconnect", "Signed out of college Wi-Fi."));
+actionButtons[0].addEventListener("click", () => runAction("connect", "Connected to college Wi-Fi."));
+actionButtons[1].addEventListener("click", () => runAction("disconnect", "Signed out of the college portal."));
 
-refreshCredentials().catch((error) => showStatus(String(error), true));
-
-invoke("auto_relogin_enabled")
-  .then((enabled) => { autoRelogin.checked = enabled; })
-  .catch((error) => showStatus(String(error), true));
+notificationToggle.addEventListener("change", async () => {
+  notificationToggle.disabled = true;
+  const requested = notificationToggle.checked;
+  try {
+    if (requested && !(await notification.isPermissionGranted())) {
+      const permission = await notification.requestPermission();
+      if (permission !== "granted") throw new Error("Allow notifications in your operating system settings to enable this option.");
+    }
+    await invoke("set_notifications_enabled", { enabled: requested });
+    notificationsEnabled = requested;
+    showStatus(settingsStatus, requested ? "Native notifications enabled." : "Native notifications disabled.");
+  } catch (error) {
+    notificationToggle.checked = !requested;
+    showStatus(settingsStatus, String(error), true);
+  } finally {
+    notificationToggle.disabled = false;
+  }
+});
 
 autoRelogin.addEventListener("change", async () => {
   autoRelogin.disabled = true;
+  const requested = autoRelogin.checked;
   try {
-    await invoke("set_auto_relogin", { enabled: autoRelogin.checked });
-    showStatus(autoRelogin.checked
-      ? "Automatic relogin enabled. Your device will reconnect every 5.5 hours."
-      : "Automatic relogin disabled.");
+    await invoke("set_auto_relogin", { enabled: requested });
+    showStatus(settingsStatus, requested ? "Automatic relogin enabled for every 5.5 hours." : "Automatic relogin disabled.");
   } catch (error) {
-    autoRelogin.checked = !autoRelogin.checked;
-    showStatus(String(error), true);
+    autoRelogin.checked = !requested;
+    showStatus(settingsStatus, String(error), true);
   } finally {
     autoRelogin.disabled = false;
   }
 });
 
-shortcutButton.addEventListener("click", async () => {
-  shortcutButton.disabled = true;
+document.querySelector("#create-shortcut").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  button.disabled = true;
   try {
     await invoke("create_connect_shortcut");
-    showStatus("One-click shortcut created on your desktop. It connects silently using saved credentials.");
+    showStatus(settingsStatus, "One-click desktop shortcut created.");
   } catch (error) {
-    showStatus(String(error), true);
+    showStatus(settingsStatus, String(error), true);
   } finally {
-    shortcutButton.disabled = false;
+    button.disabled = false;
   }
 });
+
+async function initialize() {
+  try {
+    const [savedNotifications, scheduled] = await Promise.all([
+      invoke("notifications_enabled"),
+      invoke("auto_relogin_enabled"),
+    ]);
+    notificationsEnabled = savedNotifications;
+    notificationToggle.checked = savedNotifications;
+    autoRelogin.checked = scheduled;
+    if (savedNotifications && !(await notification.isPermissionGranted())) {
+      await notification.requestPermission();
+    }
+    await refreshCredentials();
+  } catch (error) {
+    showStatus(status, String(error), true);
+  }
+}
+
+initialize();

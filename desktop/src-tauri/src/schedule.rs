@@ -110,7 +110,7 @@ fn linux(enabled: bool) -> Result<(), String> {
             executable.display()
         )).map_err(|e| e.to_string())?;
         fs::write(&timer, format!(
-            "[Unit]\nDescription=Reconnect to College Wi-Fi every 5.5 hours\n\n[Timer]\nOnStartupSec={INTERVAL_SECONDS}\nOnUnitActiveSec={INTERVAL_SECONDS}\nPersistent=true\nUnit=college-wifi-relogin.service\n\n[Install]\nWantedBy=timers.target\n"
+            "[Unit]\nDescription=Reconnect to College Wi-Fi every 5.5 hours\n\n[Timer]\nOnActiveSec={INTERVAL_SECONDS}\nOnUnitActiveSec={INTERVAL_SECONDS}\nUnit=college-wifi-relogin.service\n\n[Install]\nWantedBy=timers.target\n"
         )).map_err(|e| e.to_string())?;
         systemctl(&["daemon-reload"])?;
         systemctl(&["enable", "--now", "college-wifi-relogin.timer"])?;

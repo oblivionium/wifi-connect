@@ -3,56 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark" />
     <title>College Wi-Fi</title>
     <link rel="stylesheet" href="style.css" />
     <script src="app.js" defer></script>
   </head>
   <body>
-    <main class="panel">
-      <header>
-        <div class="mark" aria-hidden="true">W</div>
-        <div>
-          <p class="eyebrow">NETWORK ACCESS</p>
-          <h1>College Wi-Fi</h1>
-        </div>
+    <div id="scrim" class="scrim" aria-hidden="true"></div>
+    <aside id="side-menu" class="side-menu" aria-label="Main menu" aria-hidden="true">
+      <div class="menu-brand"><span class="brand-mark">W</span><span>College Wi-Fi</span></div>
+      <button class="menu-link active" data-page="home"><span>⌂</span>Overview</button>
+      <button class="menu-link" data-page="credentials"><span>◈</span>Credentials</button>
+      <button class="menu-link" data-page="settings"><span>⚙</span>Settings</button>
+      <div class="menu-note">Your password stays in the system keyring.</div>
+    </aside>
+
+    <main class="shell">
+      <header class="topbar">
+        <button id="menu-button" class="icon-button" aria-label="Open menu" aria-expanded="false"><span class="hamburger"><i></i><i></i><i></i></span></button>
+        <div class="top-title"><span class="eyebrow">NETWORK ACCESS</span><strong>College Wi-Fi</strong></div>
+        <button id="settings-button" class="icon-button settings-button" aria-label="Open settings">⚙</button>
       </header>
 
-      <section class="card" aria-labelledby="credentials-heading">
-        <div class="section-heading">
-          <div>
-            <h2 id="credentials-heading">Credentials</h2>
-            <p>Saved securely on this device.</p>
-          </div>
-          <span id="saved-badge" class="badge">Not set</span>
+      <section id="page-home" class="page active" aria-labelledby="home-title">
+        <div class="welcome">
+          <span class="welcome-mark">W</span>
+          <div><p class="eyebrow">WELCOME BACK</p><h1 id="home-title">Stay connected.</h1></div>
         </div>
-        <form id="credentials-form">
-          <label for="username">College username</label>
-          <input id="username" name="username" autocomplete="username" required />
-          <label for="password">College password</label>
-          <input id="password" name="password" type="password" autocomplete="new-password" required />
-          <button class="secondary full" type="submit">Save credentials</button>
-        </form>
+        <div class="connection-card">
+          <div class="connection-orbit"><span class="signal">⌁</span></div>
+          <p class="connection-label">COLLEGE NETWORK</p>
+          <h2>Ready when you are</h2>
+          <p class="muted">Connect securely with your saved credentials.</p>
+          <button id="connect" class="connect-button" type="button"><span class="connect-icon">↗</span>Connect</button>
+          <button id="disconnect" class="logout-button" type="button">Log out of portal</button>
+          <p id="status" role="status" aria-live="polite">Ready.</p>
+        </div>
+        <div class="home-footer"><span class="status-dot"></span><span id="credential-summary">Checking saved credentials…</span><button class="text-button" data-page="credentials">Manage</button></div>
       </section>
 
-      <section class="card preferences" aria-labelledby="preferences-heading">
-        <label class="toggle-row" for="auto-relogin">
-          <span>
-            <strong id="preferences-heading">Automatic relogin</strong>
-            <small>Reconnect every 5.5 hours while you’re signed in.</small>
-          </span>
-          <input id="auto-relogin" type="checkbox" />
-        </label>
-        <button id="create-shortcut" class="secondary shortcut-button" type="button">Create one-click desktop shortcut</button>
+      <section id="page-credentials" class="page" aria-labelledby="credentials-title" hidden>
+        <div class="page-heading"><p class="eyebrow">ACCOUNT</p><h1 id="credentials-title">Credentials</h1><p class="muted">Saved only in your device’s secure credential store.</p></div>
+        <div class="card">
+          <div class="section-heading"><h2>College account</h2><span id="saved-badge" class="badge">Not set</span></div>
+          <form id="credentials-form">
+            <label for="username">College username</label>
+            <input id="username" name="username" autocomplete="username" required />
+            <label for="password">College password</label>
+            <input id="password" name="password" type="password" autocomplete="new-password" required />
+            <button class="primary-button" type="submit">Save credentials</button>
+          </form>
+          <p id="credentials-status" class="inline-status" role="status" aria-live="polite"></p>
+        </div>
       </section>
 
-      <section class="actions" aria-label="Connection actions">
-        <button id="connect" class="primary" type="button">Connect</button>
-        <button id="disconnect" class="secondary" type="button">Log out</button>
+      <section id="page-settings" class="page" aria-labelledby="settings-title" hidden>
+        <div class="page-heading"><p class="eyebrow">PREFERENCES</p><h1 id="settings-title">Settings</h1><p class="muted">Choose how College Wi-Fi works for you.</p></div>
+        <div class="settings-list">
+          <section class="setting-card">
+            <div><h2>Native notifications</h2><p>Show the result after a connection or relogin attempt.</p></div>
+            <label class="switch"><input id="notifications-toggle" type="checkbox" /><span></span></label>
+          </section>
+          <section class="setting-card">
+            <div><h2>Automatic relogin</h2><p>Reconnect every 5.5 hours using your saved credentials.</p></div>
+            <label class="switch"><input id="auto-relogin" type="checkbox" /><span></span></label>
+          </section>
+          <section class="setting-card setting-action">
+            <div><h2>One-click shortcut</h2><p>Connect quietly from your desktop with a native result notification.</p></div>
+            <button id="create-shortcut" class="secondary-button" type="button">Create</button>
+          </section>
+        </div>
+        <p id="settings-status" class="inline-status" role="status" aria-live="polite"></p>
       </section>
-
-      <p id="status" role="status" aria-live="polite">Ready.</p>
-      <footer>Connects through the college sign-in portal.</footer>
+      <footer>College sign-in portal <span>•</span> credentials stay on this device</footer>
     </main>
   </body>
 </html>

@@ -45,7 +45,12 @@ network attacker could impersonate the portal and replace its RSA key.
   systemd timer on Linux, Task Scheduler on Windows, or a LaunchAgent on macOS.
 - The settings window can enable or disable automatic relogin without asking
   the user to re-enter credentials. Credentials remain in the OS keyring.
-- Native notifications report the result of a requested login or logout.
+- Native Windows, macOS, and Linux notifications report success or failure for
+  manual connections, shortcuts, and scheduled relogins. Notifications can be
+  disabled in Settings.
+- The dark settings app opens to a large Connect action. Credentials and
+  preferences are separate pages, reached through an animated navigation
+  drawer and a settings button.
 
 ## Security and captures
 
@@ -69,8 +74,9 @@ GUI; the standalone `wifi` CLI is still packaged separately.
    fields match the captured traffic; live Rust login still needs campus
    validation.
 3. The Tauri settings window has credential save/update, connect, logout,
-   native result notifications, an opt-in 5.5-hour relogin toggle, and a
-   cross-platform desktop-shortcut action. Linux and Windows installers also
+   native result notifications with a disable preference, a dark multi-page
+   settings UI, an opt-in 5.5-hour relogin toggle, and a cross-platform
+   desktop-shortcut action. Linux and Windows installers also
    include a separate silent connect shortcut. The app binary supports
    `--connect` and `--disconnect` for platform launchers. The Debian package
    uses system GTK/WebKit; Windows/macOS installer behavior still needs
