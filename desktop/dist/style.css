@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Quicksand";
+  src: url("./fonts/Quicksand-Variable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
 :root {
   color-scheme: dark;
   font-family: "Quicksand", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -21,8 +29,8 @@ button { color: inherit; }
 .logo-button:hover, .logo-button:focus-visible { transform: rotate(-12deg) scale(1.11); filter: drop-shadow(0 3px 13px #d3f5b055); outline: 0; }
 .page-menu { position: absolute; top: 48px; left: -9px; display: grid; width: 148px; gap: 2px; padding: 7px; border-radius: 15px; background: #202820; box-shadow: 0 16px 38px #0007; opacity: 0; pointer-events: none; transform: translateY(-7px) scale(.97); transform-origin: 15% 0; transition: opacity .2s ease, transform .25s cubic-bezier(.2,.8,.2,1); }
 .menu-wrap:hover .page-menu, .menu-wrap:focus-within .page-menu, .menu-wrap.open .page-menu { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
-.page-link { min-height: 38px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: #aeb8ab; cursor: pointer; text-align: left; font-size: 11px; transition: background .18s, color .18s, transform .18s; }
-.page-link:hover, .page-link.active { transform: translateX(2px); background: #d3f5b015; color: var(--lime); }
+.page-link { display: grid; place-items: center; min-height: 38px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: #aeb8ab; cursor: pointer; text-align: center; font-size: 11px; transition: background .18s, color .18s; }
+.page-link:hover, .page-link.active { background: #d3f5b015; color: var(--lime); }
 main { display: grid; min-height: calc(100vh - 72px); place-items: center; padding: 0 28px 48px; }
 .page { width: min(100%, 390px); animation: page-in .24s ease both; }
 .page[hidden] { display: none; }
