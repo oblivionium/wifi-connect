@@ -44,12 +44,16 @@ function showPage(name) {
 }
 
 async function refreshPortalStatus() {
-  setPortalState(null, "Checking status");
+  if (isAuthenticated === null) setPortalState(null, "Checking status");
   try {
     const authenticated = await invoke("portal_authenticated");
     setPortalState(authenticated);
   } catch (_) {
-    setPortalState(null);
+    if (isAuthenticated === null) setPortalState(null);
+    else {
+      portalStatus.dataset.state = "error";
+      portalStatus.textContent = "Status unavailable";
+    }
   }
 }
 
@@ -105,7 +109,8 @@ toggle.addEventListener("click", async () => {
       await sendNotification("College Wi-Fi", "Connected");
     }
   } catch (error) {
-    setPortalState(null, isAuthenticated ? "Logout failed" : "Connection failed");
+    portalStatus.dataset.state = "error";
+    portalStatus.textContent = isAuthenticated ? "Logout failed" : "Connection failed";
     await sendNotification("College Wi-Fi", String(error));
   } finally {
     await Promise.allSettled([refreshPortalStatus(), refreshCredentials()]);
