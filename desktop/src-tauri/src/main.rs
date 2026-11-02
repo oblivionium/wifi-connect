@@ -46,6 +46,14 @@ fn disconnect() -> Result<(), String> {
 }
 
 #[tauri::command]
+fn portal_authenticated() -> Result<bool, String> {
+    wifi::Portal::new()
+        .map_err(|error| error.to_string())?
+        .authenticated()
+        .map_err(|error| error.to_string())
+}
+
+#[tauri::command]
 fn auto_relogin_enabled() -> bool {
     schedule::enabled()
 }
@@ -127,6 +135,7 @@ fn main() {
             save_credentials,
             connect,
             disconnect,
+            portal_authenticated,
             auto_relogin_enabled,
             set_auto_relogin,
             create_connect_shortcut,

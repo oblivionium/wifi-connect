@@ -131,6 +131,13 @@ impl Portal {
         Ok(())
     }
 
+    pub fn authenticated(&self) -> Result<bool, PortalError> {
+        self.open_portal()?;
+        let _: serde_json::Value = self.post_json("GetStateAndView")?;
+        let attributes: Attributes = self.post_json("GetAttributes")?;
+        Ok(attributes.authenticated)
+    }
+
     fn open_portal(&self) -> Result<(), PortalError> {
         self.client
             .get(format!("{PORTAL}PortalMain"))

@@ -58,7 +58,8 @@ a browser engine.
 
 The UI is plain HTML, CSS, and JavaScript. Tauri provides the native window,
 system notifications, and platform packaging. The Rust core uses `reqwest` for
-the portal session and `rsa` for password encryption.
+the portal session and `rsa` for password encryption. The main screen checks
+portal authentication on launch and whenever the app regains focus.
 
 ## Installation
 
@@ -96,8 +97,8 @@ create a one-click desktop shortcut from Settings.
 1. Open College Wi-Fi and visit **Credentials** from the navigation menu.
 2. Enter your college username and password, then save them.
 3. Return to the main page and press **Connect**.
-4. Use the top-right settings control to enable notifications or 5.5-hour
-   automatic relogin.
+4. Hover or click the Wi-Fi logo to open Connect, Credentials, and Settings.
+   Use Settings to enable notifications or 5.5-hour automatic relogin.
 
 The desktop shortcut and platform launcher connect without opening the settings
 window. Connection results appear as native notifications when notifications
