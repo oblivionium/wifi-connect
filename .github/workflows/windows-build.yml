@@ -27,15 +27,32 @@ jobs:
         working-directory: desktop
         run: npm ci
 
-      - name: Build macOS disk image
+      - name: Build macOS app and CLI package
         working-directory: desktop
         run: npm run tauri -- build --bundles dmg
+
+      - name: Package CLI in PATH with the macOS app
+        shell: bash
+        run: |
+          app_version=$(node -p "require('./desktop/package.json').version")
+          app_path="desktop/src-tauri/target/release/bundle/macos/Wi-Fi Connect.app"
+          package_root="$RUNNER_TEMP/wifi-connect-pkgroot"
+          package_dir="desktop/src-tauri/target/release/bundle/pkg"
+          mkdir -p "$package_root/Applications" "$package_root/usr/local/bin" "$package_dir"
+          ditto "$app_path" "$package_root/Applications/Wi-Fi Connect.app"
+          install -m 755 desktop/src-tauri/binaries/wifi "$package_root/usr/local/bin/wifi"
+          pkgbuild --root "$package_root" --install-location / \
+            --identifier edu.lnmiit.college-wifi.install \
+            --version "$app_version" \
+            "$package_dir/Wi-Fi Connect.pkg"
 
       - name: Upload macOS installer
         uses: actions/upload-artifact@v4
         with:
           name: college-wifi-macos
-          path: desktop/src-tauri/target/release/bundle/dmg/*.dmg
+          path: |
+            desktop/src-tauri/target/release/bundle/dmg/*.dmg
+            desktop/src-tauri/target/release/bundle/pkg/*.pkg
           if-no-files-found: error
 
   build-and-smoke-test:
@@ -77,6 +94,14 @@ jobs:
 
           $app = 'C:\wifi-connect-test\wifi-desktop.exe'
           if (-not (Test-Path $app)) { throw "Installed app was not found: $app" }
+
+          $cli = 'C:\wifi-connect-test\wifi.exe'
+          if (-not (Test-Path $cli)) { throw "Installed wifi CLI was not found: $cli" }
+          $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+          if (-not (($userPath -split ';') -contains 'C:\wifi-connect-test')) { throw 'Installer did not add its directory to the current user PATH' }
+          & $cli --help | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw "Installed wifi CLI --help failed with exit code $LASTEXITCODE" }
+
           $shell = New-Object -ComObject WScript.Shell
           $link = $shell.CreateShortcut($shortcut)
           if ($link.TargetPath -ne $app -or $link.Arguments -ne '--connect') { throw "Connect shortcut points to the wrong target or arguments" }

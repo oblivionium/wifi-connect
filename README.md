@@ -67,8 +67,10 @@ stays on for 5.5 hours or until you disconnect.
 Install the package for your operating system from the project’s
 [GitHub Actions artifacts](https://github.com/Oblivionium/wifi/actions). The
 workflow currently produces a Linux Debian package, a Windows NSIS installer,
-and a macOS disk image. CI artifacts are build outputs; they are not GitHub
-Releases.
+and a macOS disk image and package installer. CI artifacts are build outputs;
+they are not GitHub Releases. Each installer includes the `wifi` CLI. Linux
+installs it as `/usr/bin/wifi`; Windows adds the installed app directory to the
+current user's `PATH`; macOS's `.pkg` installs it as `/usr/local/bin/wifi`.
 
 ### Linux and WSL 2
 
@@ -89,12 +91,14 @@ are separate from Windows credentials.
 
 Run `Wi-Fi Connect_0.1.0_x64-setup.exe`. The installer adds a Start menu
 shortcut for opening the app and a separate **Connect** shortcut for silent
-connection.
+connection. It also makes `wifi` available in new terminals for the current
+Windows user.
 
 ### macOS
 
 Open the downloaded `.dmg` and move Wi-Fi Connect to Applications. The app can
-create a one-click desktop shortcut from Settings.
+create a one-click desktop shortcut from Settings. To install the `wifi`
+command into `/usr/local/bin`, use the `.pkg` installer from the same build.
 
 ## Usage
 
@@ -116,6 +120,9 @@ wifi logout
 wifi credentials set
 ```
 
+The installed command reads and writes credentials through the same operating
+system credential store as the desktop app.
+
 The desktop app binary also accepts `--connect` and `--disconnect`; those modes
 are used by the platform shortcuts and schedulers.
 
@@ -135,7 +142,8 @@ Build the Rust CLI/core:
 cargo build --release
 ```
 
-Build the desktop installer from `desktop/`:
+Build the desktop installer from `desktop/`. Tauri runs the CLI sidecar build
+before creating the installer:
 
 ```sh
 npm ci

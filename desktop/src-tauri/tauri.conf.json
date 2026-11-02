@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "identifier": "edu.lnmiit.college-wifi",
   "build": {
-    "frontendDist": "../dist"
+    "frontendDist": "../dist",
+    "beforeBuildCommand": "npm run build:cli"
   },
   "app": {
     "withGlobalTauri": true,
@@ -24,11 +25,13 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "externalBin": ["binaries/wifi"],
     "category": "Utility",
     "linux": {
       "deb": {
         "files": {
-          "/usr/share/applications/college-wifi-connect.desktop": "resources/college-wifi-connect.desktop"
+          "/usr/share/applications/college-wifi-connect.desktop": "resources/college-wifi-connect.desktop",
+          "/usr/bin/wifi": "binaries/wifi"
         }
       }
     },

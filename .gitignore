@@ -20,6 +20,7 @@ dist/
 release/
 coverage/
 desktop/src-tauri/gen/
+desktop/src-tauri/binaries/
 
 # Signing keys and local OS/editor state
 *.p12
