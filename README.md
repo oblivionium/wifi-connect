@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="desktop/dist/wifi-mark.png" width="112" alt="College Wi-Fi mark" />
+<img src="desktop/dist/wifi-mark.png" width="112" alt="Wi-Fi Connect mark" />
 
-# College Wi-Fi
+# Wi-Fi Connect
 
 One click to sign in to the campus network.
 
@@ -15,7 +15,7 @@ One click to sign in to the campus network.
 
 </div>
 
-College Wi-Fi signs in to the campus captive portal on Windows, macOS, and
+Wi-Fi Connect signs in to the campus captive portal on Windows, macOS, and
 Linux. The Rust client follows the portal’s HTTP and RSA login flow directly;
 the desktop application uses the operating system’s webview and does not bundle
 a browser engine.
@@ -59,7 +59,8 @@ a browser engine.
 The UI is plain HTML, CSS, and JavaScript. Tauri provides the native window,
 system notifications, and platform packaging. The Rust core uses `reqwest` for
 the portal session and `rsa` for password encryption. The main screen checks
-portal authentication on launch and whenever the app regains focus.
+portal authentication on launch. After a successful connection, the button
+stays on for 5.5 hours or until you disconnect.
 
 ## Installation
 
@@ -74,8 +75,11 @@ Releases.
 Install the `.deb` package:
 
 ```sh
-sudo apt install ./College\ Wi-Fi_0.1.0_amd64.deb
+sudo apt install './Wi-Fi Connect_0.1.0_amd64.deb'
 ```
+
+If upgrading from the former `college-wi-fi` package, remove it first with
+`sudo apt remove college-wi-fi`.
 
 WSL requires WSLg for the desktop window and a running Secret Service provider
 such as GNOME Keyring for secure credential storage. Linux keyring credentials
@@ -83,18 +87,18 @@ are separate from Windows credentials.
 
 ### Windows
 
-Run `College Wi-Fi_0.1.0_x64-setup.exe`. The installer adds a Start menu
-shortcut for opening Settings and a separate **Connect to College Wi-Fi**
-shortcut for silent connection.
+Run `Wi-Fi Connect_0.1.0_x64-setup.exe`. The installer adds a Start menu
+shortcut for opening the app and a separate **Connect** shortcut for silent
+connection.
 
 ### macOS
 
-Open the downloaded `.dmg` and move College Wi-Fi to Applications. The app can
+Open the downloaded `.dmg` and move Wi-Fi Connect to Applications. The app can
 create a one-click desktop shortcut from Settings.
 
 ## Usage
 
-1. Open College Wi-Fi and visit **Credentials** from the navigation menu.
+1. Open Wi-Fi Connect and visit **Credentials** from the navigation menu.
 2. Enter your college username and password, then save them.
 3. Return to the main page and press **Connect**.
 4. Hover or click the Wi-Fi logo to open Connect, Credentials, and Settings.

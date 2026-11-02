@@ -18,18 +18,70 @@ const shortcutButton = document.querySelector("#create-shortcut");
 let isAuthenticated = null;
 let hasCredentials = false;
 let notificationsEnabled = true;
+let connectionExpiryTimer = null;
+const CONNECTION_WINDOW_MS = 5.5 * 60 * 60 * 1000;
+const CONNECTION_EXPIRY_KEY = "college-wifi-connection-expires-at";
 
 function message(target, text, error = false) {
   target.textContent = text;
   target.classList.toggle("error", error);
 }
 
+function setStatus(state, label) {
+  const nextLabel = label || (state === "connected" ? "Connected" : state === "disconnected" ? "Not connected" : "Status unavailable");
+  if (portalStatus.dataset.state !== state || portalStatus.textContent !== nextLabel) {
+    portalStatus.classList.remove("status-change");
+    void portalStatus.offsetWidth;
+    portalStatus.classList.add("status-change");
+  }
+  portalStatus.dataset.state = state;
+  portalStatus.textContent = nextLabel;
+}
+
 function setPortalState(state, label) {
+  const changed = state !== isAuthenticated;
   isAuthenticated = state;
   toggle.setAttribute("aria-checked", String(state === true));
+  if (changed) {
+    toggle.classList.remove("state-change");
+    void toggle.offsetWidth;
+    toggle.classList.add("state-change");
+  }
   toggle.disabled = state === false && !hasCredentials;
-  portalStatus.dataset.state = state === true ? "connected" : state === null ? "error" : "disconnected";
-  portalStatus.textContent = label || (state === true ? "Logged in" : state === false ? "Logged out" : "Status unavailable");
+  setStatus(state === true ? "connected" : state === null ? "error" : "disconnected", label);
+}
+
+function clearConnectionExpiry() {
+  window.clearTimeout(connectionExpiryTimer);
+  connectionExpiryTimer = null;
+  localStorage.removeItem(CONNECTION_EXPIRY_KEY);
+}
+
+function scheduleConnectionExpiry(expiresAt) {
+  window.clearTimeout(connectionExpiryTimer);
+  connectionExpiryTimer = window.setTimeout(() => {
+    if (Date.now() < expiresAt) return scheduleConnectionExpiry(expiresAt);
+    clearConnectionExpiry();
+    setPortalState(false, "Not connected");
+  }, Math.max(0, expiresAt - Date.now()));
+}
+
+function markConnected() {
+  const expiresAt = Date.now() + CONNECTION_WINDOW_MS;
+  localStorage.setItem(CONNECTION_EXPIRY_KEY, String(expiresAt));
+  scheduleConnectionExpiry(expiresAt);
+  setPortalState(true, "Connected");
+}
+
+function refreshConnectionExpiry() {
+  const expiresAt = Number(localStorage.getItem(CONNECTION_EXPIRY_KEY));
+  if (!expiresAt) return;
+  if (expiresAt <= Date.now()) {
+    clearConnectionExpiry();
+    setPortalState(false, "Not connected");
+  } else {
+    scheduleConnectionExpiry(expiresAt);
+  }
 }
 
 function showPage(name) {
@@ -44,16 +96,25 @@ function showPage(name) {
 }
 
 async function refreshPortalStatus() {
-  if (isAuthenticated === null) setPortalState(null, "Checking status");
+  const savedExpiry = Number(localStorage.getItem(CONNECTION_EXPIRY_KEY));
+  if (savedExpiry) {
+    if (savedExpiry > Date.now()) {
+      setPortalState(true, "Connected");
+      scheduleConnectionExpiry(savedExpiry);
+    } else {
+      clearConnectionExpiry();
+      setPortalState(false, "Not connected");
+    }
+    return;
+  }
+  if (isAuthenticated === null) setStatus("pending", "Checking…");
   try {
     const authenticated = await invoke("portal_authenticated");
-    setPortalState(authenticated);
+    if (authenticated) markConnected();
+    else setPortalState(false, "Not connected");
   } catch (_) {
-    if (isAuthenticated === null) setPortalState(null);
-    else {
-      portalStatus.dataset.state = "error";
-      portalStatus.textContent = "Status unavailable";
-    }
+    if (isAuthenticated === null) setPortalState(null, "Status unavailable");
+    else setStatus("error", "Status unavailable");
   }
 }
 
@@ -96,24 +157,23 @@ document.addEventListener("keydown", (event) => {
 
 toggle.addEventListener("click", async () => {
   toggle.disabled = true;
-  portalStatus.dataset.state = "pending";
-  portalStatus.textContent = isAuthenticated ? "Signing out" : "Connecting";
+  setStatus("pending", isAuthenticated ? "Disconnecting…" : "Connecting…");
   try {
     if (isAuthenticated) {
       await invoke("disconnect");
-      setPortalState(false);
-      await sendNotification("College Wi-Fi", "Logged out");
+      clearConnectionExpiry();
+      setPortalState(false, "Not connected");
+      await sendNotification("Wi-Fi Connect", "Logged out");
     } else {
       await invoke("connect");
-      setPortalState(true);
-      await sendNotification("College Wi-Fi", "Connected");
+      markConnected();
+      await sendNotification("Wi-Fi Connect", "Connected");
     }
   } catch (error) {
-    portalStatus.dataset.state = "error";
-    portalStatus.textContent = isAuthenticated ? "Logout failed" : "Connection failed";
-    await sendNotification("College Wi-Fi", String(error));
+    setStatus("error", isAuthenticated ? "Disconnect failed" : "Connection failed");
+    await sendNotification("Wi-Fi Connect", String(error));
   } finally {
-    await Promise.allSettled([refreshPortalStatus(), refreshCredentials()]);
+    await refreshCredentials();
   }
 });
 
@@ -194,5 +254,5 @@ async function initialize() {
   if (scheduled.status === "fulfilled") autoReloginToggle.checked = scheduled.value;
 }
 
-window.addEventListener("focus", refreshPortalStatus);
+window.addEventListener("focus", refreshConnectionExpiry);
 initialize();

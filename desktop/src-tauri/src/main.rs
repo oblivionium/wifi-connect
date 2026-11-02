@@ -115,10 +115,10 @@ fn main() {
                 let succeeded = result.is_ok();
                 if preferences::notifications_enabled(app.handle()) {
                     match result {
-                        Ok(message) => notify(app.handle(), "College Wi-Fi", message),
+                        Ok(message) => notify(app.handle(), "Wi-Fi Connect", message),
                         Err(error) => notify(
                             app.handle(),
-                            "College Wi-Fi",
+                            "Wi-Fi Connect",
                             &format!("Connection failed: {error}"),
                         ),
                     };
@@ -143,5 +143,5 @@ fn main() {
             set_notifications_enabled
         ])
         .run(tauri::generate_context!())
-        .expect("failed to start College Wi-Fi settings");
+        .expect("failed to start Wi-Fi Connect");
 }

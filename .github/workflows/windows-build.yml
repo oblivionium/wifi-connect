@@ -72,7 +72,7 @@ jobs:
           $install = Start-Process -FilePath $installer.FullName -ArgumentList @('/S', '/D=C:\wifi-connect-test') -Wait -PassThru
           if ($install.ExitCode -ne 0) { throw "Installer failed with exit code $($install.ExitCode)" }
 
-          $shortcut = Join-Path $env:APPDATA 'Microsoft/Windows/Start Menu/Programs/College Wi-Fi/Connect to College Wi-Fi.lnk'
+          $shortcut = Join-Path $env:APPDATA 'Microsoft/Windows/Start Menu/Programs/Wi-Fi Connect/Connect.lnk'
           if (-not (Test-Path $shortcut)) { throw "Connect shortcut was not installed: $shortcut" }
 
           $app = 'C:\wifi-connect-test\wifi-desktop.exe'

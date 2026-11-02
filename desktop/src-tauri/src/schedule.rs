@@ -49,13 +49,15 @@ pub fn create_connect_shortcut() -> Result<(), String> {
 fn linux_shortcut() -> Result<(), String> {
     use std::os::unix::fs::PermissionsExt;
     let executable = env::current_exe().map_err(|e| e.to_string())?;
-    let path = desktop_dir().join("Connect to College Wi-Fi.desktop");
+    let desktop = desktop_dir();
+    let _ = fs::remove_file(desktop.join("Connect to College Wi-Fi.desktop"));
+    let path = desktop.join("Connect.desktop");
     fs::create_dir_all(path.parent().unwrap()).map_err(|e| e.to_string())?;
     let exec = executable
         .to_string_lossy()
         .replace('\\', "\\\\")
         .replace('"', "\\\"");
-    fs::write(&path, format!("[Desktop Entry]\nType=Application\nName=Connect to College Wi-Fi\nComment=Connect using saved credentials\nExec=\"{exec}\" --connect\nIcon=wifi-desktop\nTerminal=false\nCategories=Network;Utility;\n")).map_err(|e| e.to_string())?;
+    fs::write(&path, format!("[Desktop Entry]\nType=Application\nName=Connect\nComment=Connect using saved credentials\nExec=\"{exec}\" --connect\nIcon=wifi-desktop\nTerminal=false\nCategories=Network;Utility;\n")).map_err(|e| e.to_string())?;
     fs::set_permissions(path, fs::Permissions::from_mode(0o755)).map_err(|e| e.to_string())
 }
 
@@ -63,7 +65,9 @@ fn linux_shortcut() -> Result<(), String> {
 fn macos_shortcut() -> Result<(), String> {
     use std::os::unix::fs::PermissionsExt;
     let executable = env::current_exe().map_err(|e| e.to_string())?;
-    let app = desktop_dir().join("Connect to College Wi-Fi.app");
+    let desktop = desktop_dir();
+    let _ = fs::remove_dir_all(desktop.join("Connect to College Wi-Fi.app"));
+    let app = desktop.join("Connect.app");
     let contents = app.join("Contents");
     let binary = contents.join("MacOS/ConnectWiFi");
     fs::create_dir_all(binary.parent().unwrap()).map_err(|e| e.to_string())?;
@@ -74,7 +78,7 @@ fn macos_shortcut() -> Result<(), String> {
         include_bytes!("../icons/icon.icns"),
     )
     .map_err(|e| e.to_string())?;
-    fs::write(contents.join("Info.plist"), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>ConnectWiFi</string><key>CFBundleIdentifier</key><string>edu.lnmiit.college-wifi.connect</string><key>CFBundleName</key><string>Connect to College Wi-Fi</string><key>CFBundleIconFile</key><string>icon.icns</string><key>CFBundlePackageType</key><string>APPL</string></dict></plist>\n").map_err(|e| e.to_string())?;
+    fs::write(contents.join("Info.plist"), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\"><dict><key>CFBundleExecutable</key><string>ConnectWiFi</string><key>CFBundleIdentifier</key><string>edu.lnmiit.college-wifi.connect</string><key>CFBundleName</key><string>Connect</string><key>CFBundleIconFile</key><string>icon.icns</string><key>CFBundlePackageType</key><string>APPL</string></dict></plist>\n").map_err(|e| e.to_string())?;
     let exe = executable.to_string_lossy().replace('\'', "'\\''");
     fs::write(&binary, format!("#!/bin/sh\nexec '{exe}' --connect\n"))
         .map_err(|e| e.to_string())?;
@@ -85,7 +89,7 @@ fn macos_shortcut() -> Result<(), String> {
 fn windows_shortcut() -> Result<(), String> {
     let executable = env::current_exe().map_err(|e| e.to_string())?;
     let executable = executable.to_string_lossy().replace('\'', "''");
-    let script = format!("$w=New-Object -ComObject WScript.Shell; $s=$w.CreateShortcut([Environment]::GetFolderPath('Desktop')+'\\Connect to College Wi-Fi.lnk'); $s.TargetPath='{executable}'; $s.Arguments='--connect'; $s.WorkingDirectory=[IO.Path]::GetDirectoryName('{executable}'); $s.Save()");
+    let script = format!("$w=New-Object -ComObject WScript.Shell; $d=[Environment]::GetFolderPath('Desktop'); Remove-Item -LiteralPath ($d+'\\Connect to College Wi-Fi.lnk') -Force -ErrorAction SilentlyContinue; $s=$w.CreateShortcut($d+'\\Connect.lnk'); $s.TargetPath='{executable}'; $s.Arguments='--connect'; $s.WorkingDirectory=[IO.Path]::GetDirectoryName('{executable}'); $s.Save()");
     let output = Command::new("powershell.exe")
         .args(["-NoProfile", "-NonInteractive", "-Command", &script])
         .output()

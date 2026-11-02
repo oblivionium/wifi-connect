@@ -1,7 +1,7 @@
 [package]
 name = "wifi-desktop"
 version = "0.1.0"
-description = "Settings window for College Wi-Fi"
+description = "Cross-platform college Wi-Fi connection app"
 edition = "2021"
 
 [build-dependencies]

@@ -43,10 +43,17 @@ main { display: grid; min-height: calc(100vh - 72px); place-items: center; paddi
 .power-mark { width: 40px; height: 40px; fill: none; stroke: #adb7ac; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .16s ease-out, transform .16s ease-out; }
 .connection-toggle[aria-checked="true"] .toggle-track { background: var(--lime); box-shadow: inset 0 1px 2px #ffffff66, 0 0 34px #d3f5b043, 0 12px 30px #0003; }
 .connection-toggle[aria-checked="true"] .power-mark { stroke: #182116; transform: scale(1.04); }
+.connection-toggle.state-change[aria-checked="true"] .toggle-track { animation: power-on .3s cubic-bezier(.2,.8,.25,1); }
+.connection-toggle.state-change[aria-checked="false"] .toggle-track { animation: power-off .22s ease-out; }
+@keyframes power-on { 0% { transform: scale(.9); } 65% { transform: scale(1.045); } 100% { transform: scale(1); } }
+@keyframes power-off { 0% { transform: scale(1.035); } 100% { transform: scale(1); } }
 .connection-toggle:disabled { opacity: .5; cursor: wait; }
-.portal-status { min-height: 18px; margin: 0; color: var(--muted); font-size: 12px; letter-spacing: .015em; transition: color .25s; }
-.portal-status[data-state="connected"] { color: var(--lime); }
-.portal-status[data-state="error"] { color: #d89a8b; }
+.portal-status { display: inline-flex; align-items: center; justify-content: center; min-width: 132px; min-height: 34px; margin: 0; padding: 0 16px; border-radius: 999px; background: #1b221c; color: #aab5a6; font-size: 12px; font-weight: 600; letter-spacing: .015em; transition: background .22s ease-out, color .22s ease-out, box-shadow .22s ease-out, transform .22s ease-out; }
+.portal-status[data-state="connected"] { background: #d3f5b01a; color: var(--lime); box-shadow: inset 0 0 0 1px #d3f5b01e; }
+.portal-status[data-state="pending"] { color: #e1e9dc; }
+.portal-status[data-state="error"] { background: #d89a8b18; color: #e0a397; box-shadow: inset 0 0 0 1px #d89a8b20; }
+.portal-status.status-change { animation: status-change .28s ease-out; }
+@keyframes status-change { 0% { opacity: .55; transform: scale(.96); } 100% { opacity: 1; transform: scale(1); } }
 .form-page { display: grid; gap: 11px; }
 #credentials-form { display: grid; gap: 10px; }
 #credentials-form input { width: 100%; height: 48px; padding: 0 16px; border: 0; border-radius: 13px; outline: 0; background: var(--surface); color: #eef3eb; box-shadow: inset 0 1px 4px #0003; transition: background .2s, box-shadow .2s; }

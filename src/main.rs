@@ -37,11 +37,11 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         Command::Login => {
             let credentials = load_credentials()?;
             Portal::new()?.login(&credentials.username, &credentials.password)?;
-            println!("College Wi-Fi connected.");
+            println!("Wi-Fi Connect: connected.");
         }
         Command::Logout => {
             Portal::new()?.logout()?;
-            println!("College Wi-Fi disconnected.");
+            println!("Wi-Fi Connect: disconnected.");
         }
         Command::Credentials {
             command: CredentialCommand::Set,

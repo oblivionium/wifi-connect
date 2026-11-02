@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=Connect to College Wi-Fi
+Name=Connect
 Comment=Connect silently using your saved credentials
 Exec=wifi-desktop --connect
 Icon=wifi-desktop
