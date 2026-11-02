@@ -18,6 +18,7 @@ const shortcutButton = document.querySelector("#create-shortcut");
 let isAuthenticated = null;
 let hasCredentials = false;
 let notificationsEnabled = true;
+let connectionPending = false;
 let connectionExpiryTimer = null;
 const CONNECTION_WINDOW_MS = 5.5 * 60 * 60 * 1000;
 const CONNECTION_EXPIRY_KEY = "college-wifi-connection-expires-at";
@@ -47,8 +48,15 @@ function setPortalState(state, label) {
     void toggle.offsetWidth;
     toggle.classList.add("state-change");
   }
-  toggle.disabled = state === false && !hasCredentials;
+  toggle.disabled = connectionPending || (state === false && !hasCredentials);
   setStatus(state === true ? "connected" : state === null ? "error" : "disconnected", label);
+}
+
+function setConnectionPending(pending) {
+  connectionPending = pending;
+  toggle.setAttribute("aria-busy", String(pending));
+  toggle.classList.toggle("is-pending", pending);
+  toggle.disabled = pending || (isAuthenticated !== true && !hasCredentials);
 }
 
 function clearConnectionExpiry() {
@@ -122,7 +130,7 @@ async function refreshCredentials() {
   const [saved, savedUsername] = await Promise.all([invoke("credentials_saved"), invoke("current_username")]);
   hasCredentials = saved;
   if (savedUsername) username.value = savedUsername;
-  toggle.disabled = isAuthenticated !== true && !hasCredentials;
+  toggle.disabled = connectionPending || (isAuthenticated !== true && !hasCredentials);
 }
 
 async function sendNotification(title, body) {
@@ -156,23 +164,27 @@ document.addEventListener("keydown", (event) => {
 });
 
 toggle.addEventListener("click", async () => {
-  toggle.disabled = true;
+  setConnectionPending(true);
   setStatus("pending", isAuthenticated ? "Disconnecting…" : "Connecting…");
   try {
     if (isAuthenticated) {
       await invoke("disconnect");
       clearConnectionExpiry();
       setPortalState(false, "Not connected");
+      setConnectionPending(false);
       await sendNotification("Wi-Fi Connect", "Logged out");
     } else {
       await invoke("connect");
       markConnected();
+      setConnectionPending(false);
       await sendNotification("Wi-Fi Connect", "Connected");
     }
   } catch (error) {
     setStatus("error", isAuthenticated ? "Disconnect failed" : "Connection failed");
+    setConnectionPending(false);
     await sendNotification("Wi-Fi Connect", String(error));
   } finally {
+    setConnectionPending(false);
     await refreshCredentials();
   }
 });

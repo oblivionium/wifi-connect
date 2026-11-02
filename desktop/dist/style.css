@@ -36,8 +36,9 @@ main { display: grid; min-height: calc(100vh - 72px); place-items: center; paddi
 .page[hidden] { display: none; }
 @keyframes page-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 .home-page { display: flex; flex-direction: column; align-items: center; gap: 23px; }
-.connection-toggle { display: grid; place-items: center; width: 156px; height: 156px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; transition: transform .16s ease-out, filter .16s ease-out; }
-.connection-toggle:hover { transform: scale(1.035); filter: drop-shadow(0 8px 20px #d3f5b022); }
+.connection-toggle { -webkit-appearance: none; appearance: none; display: grid; place-items: center; width: 156px; height: 156px; padding: 0; border: 0; border-radius: 50%; outline: 0; background: transparent; box-shadow: none; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .16s ease-out; }
+.connection-toggle:hover .toggle-track { box-shadow: inset 0 2px 7px #0004, 0 10px 28px #0003, 0 0 22px #d3f5b018; }
+.connection-toggle:focus-visible { box-shadow: 0 0 0 3px #d3f5b044; }
 .connection-toggle:active { transform: scale(.975); }
 .toggle-track { display: grid; place-items: center; width: 132px; height: 132px; border-radius: 50%; background: #343c35; box-shadow: inset 0 2px 7px #0004, 0 10px 28px #0003; transition: background .16s ease-out, box-shadow .16s ease-out; }
 .power-mark { width: 40px; height: 40px; fill: none; stroke: #adb7ac; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .16s ease-out, transform .16s ease-out; }
@@ -47,7 +48,10 @@ main { display: grid; min-height: calc(100vh - 72px); place-items: center; paddi
 .connection-toggle.state-change[aria-checked="false"] .toggle-track { animation: power-off .22s ease-out; }
 @keyframes power-on { 0% { transform: scale(.9); } 65% { transform: scale(1.045); } 100% { transform: scale(1); } }
 @keyframes power-off { 0% { transform: scale(1.035); } 100% { transform: scale(1); } }
-.connection-toggle:disabled { opacity: .5; cursor: wait; }
+.connection-toggle.is-pending { cursor: progress; }
+.connection-toggle.is-pending .power-mark { animation: power-spin .9s linear infinite; transform-origin: center; }
+@keyframes power-spin { to { transform: rotate(360deg); } }
+.connection-toggle:disabled:not(.is-pending) { opacity: .5; cursor: not-allowed; }
 .portal-status { display: inline-flex; align-items: center; justify-content: center; min-width: 132px; min-height: 34px; margin: 0; padding: 0 16px; border-radius: 999px; background: #1b221c; color: #aab5a6; font-size: 12px; font-weight: 600; letter-spacing: .015em; transition: background .22s ease-out, color .22s ease-out, box-shadow .22s ease-out, transform .22s ease-out; }
 .portal-status[data-state="connected"] { background: #d3f5b01a; color: var(--lime); box-shadow: inset 0 0 0 1px #d3f5b01e; }
 .portal-status[data-state="pending"] { color: #e1e9dc; }
