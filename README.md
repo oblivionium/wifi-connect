@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="desktop/dist/wifi-mark.png" width="112" alt="Wi-Fi Connect mark" />
+<img src="assets/wifi-connect.png" width="112" alt="Wi-Fi Connect mark" />
 
 # Wi-Fi Connect
 
@@ -176,6 +176,7 @@ server’s identity; a network attacker could impersonate the portal.
 
 | Path | Purpose |
 | --- | --- |
+| `assets/` | App logo source files |
 | `src/portal.rs` | HTTP session, RSA login, logout, and session verification |
 | `src/credentials.rs` | OS credential-store integration |
 | `src/main.rs` | `wifi` command-line interface |
