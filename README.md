@@ -72,7 +72,7 @@ they are not GitHub Releases. Each installer includes the `wifi` CLI. Linux
 installs it as `/usr/bin/wifi`; Windows adds the installed app directory to the
 current user's `PATH`; macOS's `.pkg` installs it as `/usr/local/bin/wifi`.
 
-### Linux and WSL 2
+### Linux
 
 Install the `.deb` package:
 
