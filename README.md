@@ -64,11 +64,9 @@ stays on for 5.5 hours or until you disconnect.
 
 ## Installation
 
-Install the package for your operating system from the project’s
-[GitHub Actions artifacts](https://github.com/Oblivionium/wifi/actions). The
-workflow currently produces a Linux Debian package, a Windows NSIS installer,
-and a macOS disk image and package installer. CI artifacts are build outputs;
-they are not GitHub Releases. Each installer includes the `wifi` CLI. Linux
+Download the installers from the [GitHub Releases page](https://github.com/Oblivionium/wifi/releases).
+The published `0.1.0` release provides Linux, Windows, and macOS installers;
+`0.2.0` is in development. Each installer includes the `wifi` CLI. Linux
 installs it as `/usr/bin/wifi`; Windows adds the installed app directory to the
 current user's `PATH`; macOS's `.pkg` installs it as `/usr/local/bin/wifi`.
 
@@ -77,7 +75,7 @@ current user's `PATH`; macOS's `.pkg` installs it as `/usr/local/bin/wifi`.
 Install the `.deb` package:
 
 ```sh
-sudo apt install './Wi-Fi Connect_0.1.0_amd64.deb'
+sudo apt install './Wi-Fi.Connect_0.1.0_amd64.deb'
 ```
 
 If upgrading from the former `college-wi-fi` package, remove it first with
@@ -89,16 +87,16 @@ are separate from Windows credentials.
 
 ### Windows
 
-Run `Wi-Fi Connect_0.1.0_x64-setup.exe`. The installer adds a Start menu
+Run `Wi-Fi.Connect_0.1.0_x64-setup.exe`. The installer adds a Start menu
 shortcut for opening the app and a separate **Connect** shortcut for silent
 connection. It also makes `wifi` available in new terminals for the current
 Windows user.
 
 ### macOS
 
-Open the downloaded `.dmg` and move Wi-Fi Connect to Applications. The app can
-create a one-click desktop shortcut from Settings. To install the `wifi`
-command into `/usr/local/bin`, use the `.pkg` installer from the same build.
+Open `Wi-Fi.Connect_0.1.0_aarch64.dmg` and move Wi-Fi Connect to Applications.
+The app can create a one-click desktop shortcut from Settings. To install the
+`wifi` command into `/usr/local/bin`, use `Wi-Fi.Connect_0.1.0.pkg`.
 
 ## Usage
 
@@ -119,6 +117,10 @@ wifi login
 wifi logout
 wifi credentials set
 ```
+
+Starting with `0.2.0`, running `wifi` without arguments opens the desktop app.
+The published `0.1.0` command defaults to login; `wifi login` works explicitly
+in both versions.
 
 The installed command reads and writes credentials through the same operating
 system credential store as the desktop app.
@@ -180,9 +182,10 @@ server’s identity; a network attacker could impersonate the portal.
 
 ## Status
 
-The Linux package builds locally. Windows installer generation, installation,
-shortcut configuration, and silent launch are smoke-tested in Windows CI. The
-macOS disk image builds in macOS CI. Portal login was previously validated on
+Version `0.1.0` is published on GitHub Releases with Linux, Windows, and macOS
+installers. The main branch is preparing `0.2.0`; its Linux package builds
+locally, and its Windows and macOS installers will be rebuilt in CI. In `0.2.0`,
+bare `wifi` launches the desktop app. Portal login was previously validated on
 the campus network through the CLI; notification popups and portal login still
 need hands-on validation on each target operating system.
 
