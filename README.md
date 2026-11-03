@@ -98,6 +98,9 @@ Open `Wi-Fi.Connect_0.1.0_aarch64.dmg` and move Wi-Fi Connect to Applications.
 The app can create a one-click desktop shortcut from Settings. To install the
 `wifi` command into `/usr/local/bin`, use `Wi-Fi.Connect_0.1.0.pkg`.
 
+Starting with `0.2.0`, the single DMG contains a package installer that installs
+both the app in Applications and the `wifi` command in `/usr/local/bin`.
+
 ## Usage
 
 1. Open Wi-Fi Connect and visit **Credentials** from the navigation menu.

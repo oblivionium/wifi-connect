@@ -39,8 +39,11 @@ jobs:
           dmg_path=$(find desktop/src-tauri/target/release/bundle/dmg -maxdepth 1 -name '*.dmg' -print -quit)
           package_root="$RUNNER_TEMP/wifi-connect-pkgroot"
           mount_dir="$RUNNER_TEMP/wifi-connect-dmg"
+          dmg_root="$RUNNER_TEMP/wifi-connect-installer-dmg"
+          verify_mount="$RUNNER_TEMP/wifi-connect-final-dmg"
           package_dir="desktop/src-tauri/target/release/bundle/pkg"
-          mkdir -p "$package_root/Applications" "$package_root/usr/local/bin" "$package_dir" "$mount_dir"
+          pkg_path="$package_dir/Wi-Fi Connect_${app_version}.pkg"
+          mkdir -p "$package_root/Applications" "$package_root/usr/local/bin" "$package_dir" "$mount_dir" "$dmg_root" "$verify_mount"
           hdiutil attach "$dmg_path" -readonly -nobrowse -mountpoint "$mount_dir"
           trap 'hdiutil detach "$mount_dir" -quiet || true' EXIT
           ditto "$mount_dir/Wi-Fi Connect.app" "$package_root/Applications/Wi-Fi Connect.app"
@@ -50,15 +53,19 @@ jobs:
           pkgbuild --root "$package_root" --install-location / \
             --identifier edu.lnmiit.college-wifi.install \
             --version "$app_version" \
-            "$package_dir/Wi-Fi Connect.pkg"
+            "$pkg_path"
+          cp "$pkg_path" "$dmg_root/"
+          hdiutil create -volname "Wi-Fi Connect ${app_version}" \
+            -srcfolder "$dmg_root" -ov -format UDZO "$dmg_path"
+          hdiutil attach "$dmg_path" -readonly -nobrowse -mountpoint "$verify_mount"
+          test -f "$verify_mount/Wi-Fi Connect_${app_version}.pkg"
+          hdiutil detach "$verify_mount" -quiet
 
       - name: Upload macOS installer
         uses: actions/upload-artifact@v4
         with:
           name: college-wifi-macos
-          path: |
-            desktop/src-tauri/target/release/bundle/dmg/*.dmg
-            desktop/src-tauri/target/release/bundle/pkg/*.pkg
+          path: desktop/src-tauri/target/release/bundle/dmg/*.dmg
           if-no-files-found: error
 
   build-and-smoke-test:
