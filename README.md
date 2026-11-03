@@ -182,7 +182,7 @@ server’s identity; a network attacker could impersonate the portal.
 
 ## Contact
 
-[Daksh Jain on LinkedIn](https://www.linkedin.com/in/daksh-/)
+[LinkedIn](https://www.linkedin.com/in/daksh-/)
 
 ## Licence
 
