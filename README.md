@@ -180,15 +180,10 @@ server’s identity; a network attacker could impersonate the portal.
 | `desktop/src-tauri/` | Native commands, notifications, scheduling, and installers |
 | `legacy/windows/` | Sanitized historical Windows reference |
 
-## Status
+## Contact
 
-Version `0.1.0` is published on GitHub Releases with Linux, Windows, and macOS
-installers. The main branch is preparing `0.2.0`; its Linux package builds
-locally, and its Windows and macOS installers will be rebuilt in CI. In `0.2.0`,
-bare `wifi` launches the desktop app. Portal login was previously validated on
-the campus network through the CLI; notification popups and portal login still
-need hands-on validation on each target operating system.
+[Daksh Jain on LinkedIn](https://www.linkedin.com/in/daksh-/)
 
-The app and repository use the green Wi-Fi mark from `legacy/windows/wifi.ico`.
-The README structure follows the
-[Awesome README Template](https://github.com/Louis3797/awesome-readme-template).
+## Licence
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
