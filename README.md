@@ -68,7 +68,7 @@ connection button on for 5.5 hours or until you disconnect.
 ## Installation
 
 Download the installers from the [GitHub Releases page](https://github.com/Oblivionium/wifi-connect/releases).
-The published `0.2.0` release provides Linux, Windows, and macOS installers.
+The published `v0.2.0` release provides Linux, Windows, and macOS installers.
 Each installer includes the `wifi` CLI. Linux installs it as `/usr/bin/wifi`;
 Windows adds the installed app directory to the current user's `PATH`; the
 macOS package installs it as `/usr/local/bin/wifi`.
@@ -78,7 +78,7 @@ macOS package installs it as `/usr/local/bin/wifi`.
 Install the `.deb` package:
 
 ```sh
-sudo apt install './Wi-Fi.Connect_0.2.0_amd64.deb'
+sudo apt install './Wi-Fi.Connect_v0.2.0_amd64.deb'
 ```
 
 WSL requires WSLg for the desktop window and a running Secret Service provider
@@ -87,14 +87,14 @@ are separate from Windows credentials.
 
 ### Windows
 
-Run `Wi-Fi.Connect_0.2.0_x64-setup.exe`. The installer adds a Start menu
+Run `Wi-Fi.Connect_v0.2.0_x64-setup.exe`. The installer adds a Start menu
 shortcut for opening the app and a separate **Connect** shortcut for silent
 connection. It also makes `wifi` available in new terminals for the current
 Windows user.
 
 ### macOS
 
-Open `Wi-Fi.Connect_0.2.0_aarch64.dmg` and run the package installer inside.
+Open `Wi-Fi.Connect_v0.2.0_aarch64.dmg` and run the package installer inside.
 It installs Wi-Fi Connect in Applications and the `wifi` command in
 `/usr/local/bin`.
 
@@ -157,17 +157,15 @@ Windows and macOS installers on their native runners.
 
 ## Security
 
-Credentials are stored in the operating system’s credential store. Do not put
-credentials, session cookies, HAR captures, local logs, or signing keys in the
-repository. The local `archive/` directory is ignored by Git and must remain
-private.
+Credentials are stored in the operating system’s credential store.
 
-The client targets the former portal at
+The client targets the captive portal at
 `https://172.22.2.6/connect/PortalMain`. Its certificate is not valid for the
 private IP address, and the client disables certificate validation for this
 endpoint. This does not verify the server’s identity and could allow a network
-attacker to impersonate the portal. The college has phased out this portal, so
-the `0.2.0` login flow may not work at present.
+attacker to impersonate the portal. This is a problem at the IT Department's end. 
+
+Presently, the college has phased out this portal, so the `v0.2.0` and older login flow may not work.
 
 ## Project layout
 
@@ -183,7 +181,7 @@ the `0.2.0` login flow may not work at present.
 
 ## Contact
 
-[LinkedIn](https://www.linkedin.com/in/daksh-/)
+[Daksh Jain on LinkedIn](https://www.linkedin.com/in/daksh-/)
 
 ## Licence
 
