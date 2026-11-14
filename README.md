@@ -1,24 +1,29 @@
 <div align="center">
 
-<img src="assets/wifi.png" width="112" alt="Wi-Fi Connect mark" />
+<img src="assets/wifi.png" width="96" alt="Wi-Fi Connect mark" />
 
 # Wi-Fi Connect
 
-Cross-platform desktop and CLI client for college Wi-Fi sign-in.
+**Campus Wi-Fi sign-in for your desktop**<br />
+Desktop app and CLI for Windows, macOS, and Linux.
+
+<p>
+  <a href="https://oblivionium.github.io/wifi-connect/">
+    <img alt="Get installer for your OS" src="https://img.shields.io/badge/Get%20installer-Choose%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" />
+  </a>
+  <a href="https://github.com/Oblivionium/wifi-connect">
+    <img alt="View source on GitHub" src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+</p>
 
 [![Rust](https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/Oblivionium/wifi-connect/actions)
 
-[Download](https://oblivionium.github.io/wifi-connect/) · [Features](#features) · [Install](#installation) · [Usage](#usage) · [Security](#security)
+[Features](#features) · [Technology](#technology) · [Installation](#installation) · [Usage](#usage) · [Build](#build-from-source) · [Security](#security)
 
 </div>
-
-> **Portal availability:** The college has phased out the captive portal this
-> client targets. Its existing login flow may not work unless that portal
-> returns or its replacement is supported. The project remains focused on this
-> Wi-Fi integration.
 
 The application implements the campus captive portal’s HTTP and RSA login flow
 on Windows, macOS, and Linux. The desktop application uses the operating
@@ -26,24 +31,18 @@ system’s webview and does not bundle a browser engine.
 
 ## Contents
 
-- [Features](#features)
-- [Technology](#technology)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Build from source](#build-from-source)
-- [Security](#security)
-- [Project layout](#project-layout)
+[Features](#features) · [Technology](#technology) · [Installation](#installation) · [Usage](#usage) · [Build from source](#build-from-source) · [Security](#security) · [Project layout](#project-layout)
 
 ## Features
 
-- One-click connection from the desktop app or a silent desktop shortcut.
-- Credential entry and updates in a separate settings page; passwords are kept
-  in the system credential store.
-- Native notifications for successful and failed connection requests, including
-  scheduled relogins. Notifications can be disabled in Settings.
-- Optional automatic relogin every 5.5 hours.
-- Logout through the portal’s logoff endpoint.
-- `wifi` command-line login, logout, and credential setup.
+- **One-click connection** from the desktop app or a silent desktop shortcut.
+- **Credential management** in a separate page, with passwords stored in the
+  operating system’s credential store.
+- **Native notifications** for connection results and scheduled relogins;
+  notifications can be disabled in Settings.
+- **Optional auto-relogin** every 5.5 hours.
+- **Portal logout** through the logoff endpoint.
+- **CLI commands** for `wifi login`, `wifi logout`, and `wifi credentials set`.
 
 ## Technology
 
@@ -67,22 +66,22 @@ connection button on for 5.5 hours or until you disconnect.
 
 ## Installation
 
-Download the installers from the [GitHub Releases page](https://github.com/Oblivionium/wifi-connect/releases).
-The published `v0.2.0` release provides Linux, Windows, and macOS installers.
-Each installer includes the `wifi` CLI. Linux installs it as `/usr/bin/wifi`;
-Windows adds the installed app directory to the current user's `PATH`; the
-macOS package installs it as `/usr/local/bin/wifi`.
+The download page detects your operating system and offers the latest matching
+installer. Every installer includes the `wifi` CLI. Choose your platform below
+for installation steps.
 
-The [Wi-Fi Connect download page](https://oblivionium.github.io/wifi-connect/)
-detects your operating system and offers the matching installer from the latest
-GitHub release.
+<div align="center">
+  <a href="https://oblivionium.github.io/wifi-connect/">
+    <img alt="Get installer for your OS" src="https://img.shields.io/badge/Get%20installer-Download%20for%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" />
+  </a>
+</div>
 
 ### Linux
 
-Install the `.deb` package:
+From the folder containing the downloaded `.deb`, install the Linux package:
 
 ```sh
-sudo apt install './Wi-Fi.Connect_v0.2.0_amd64.deb'
+sudo apt install ./Wi-Fi.Connect*_amd64.deb
 ```
 
 WSL requires WSLg for the desktop window and a running Secret Service provider
@@ -91,15 +90,14 @@ are separate from Windows credentials.
 
 ### Windows
 
-Run `Wi-Fi.Connect_v0.2.0_x64-setup.exe`. The installer adds a Start menu
-shortcut for opening the app and a separate **Connect** shortcut for silent
-connection. It also makes `wifi` available in new terminals for the current
-Windows user.
+Run the downloaded Windows `.exe` installer. It adds a Start menu shortcut for
+opening the app and a separate **Connect** shortcut for silent connection. It
+also makes `wifi` available in new terminals for the current Windows user.
 
 ### macOS
 
-Open `Wi-Fi.Connect_v0.2.0_aarch64.dmg` and run the package installer inside.
-It installs Wi-Fi Connect in Applications and the `wifi` command in
+Open the downloaded macOS `.dmg` (Apple Silicon) and run the package installer
+inside. It installs Wi-Fi Connect in Applications and the `wifi` command in
 `/usr/local/bin`.
 
 ## Usage
@@ -167,9 +165,10 @@ The client targets the captive portal at
 `https://172.22.2.6/connect/PortalMain`. Its certificate is not valid for the
 private IP address, and the client disables certificate validation for this
 endpoint. This does not verify the server’s identity and could allow a network
-attacker to impersonate the portal. This is a problem at the IT Department's end. 
+attacker to impersonate the portal. This is a problem at the IT Department's end.
 
-Presently, the college has phased out this portal, so the `v0.2.0` and older login flow may not work.
+The college has reactivated this portal, but the `v0.2.0` login flow has not yet
+been validated against it.
 
 ## Project layout
 
@@ -185,10 +184,13 @@ Presently, the college has phased out this portal, so the `v0.2.0` and older log
 
 ## Contact
 
-[![Daksh Jain on LinkedIn](https://img.shields.io/badge/LinkedIn-Daksh%20Jain-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/daksh-/)
+<a href="https://www.linkedin.com/in/daksh-/">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="22" alt="LinkedIn logo" />
+  <strong> Daksh Jain on LinkedIn</strong>
+</a>
 
 ## Licence
 
-[![MIT License](https://img.shields.io/badge/License-MIT-8BC34A?style=flat-square)](LICENSE)
+[![MIT License](https://commons.wikimedia.org/wiki/Special:FilePath/License_icon-mit-88x31.svg)](LICENSE)
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
