@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/wifi-connect.png" width="112" alt="Wi-Fi Connect mark" />
+<img src="assets/wifi.png" width="112" alt="Wi-Fi Connect mark" />
 
 # Wi-Fi Connect
 
@@ -11,7 +11,7 @@ Cross-platform desktop and CLI client for college Wi-Fi sign-in.
 [![JavaScript](https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/Oblivionium/wifi-connect/actions)
 
-[Features](#features) · [Install](#installation) · [Usage](#usage) · [Security](#security)
+[Download](https://oblivionium.github.io/wifi-connect/) · [Features](#features) · [Install](#installation) · [Usage](#usage) · [Security](#security)
 
 </div>
 
@@ -72,6 +72,10 @@ The published `v0.2.0` release provides Linux, Windows, and macOS installers.
 Each installer includes the `wifi` CLI. Linux installs it as `/usr/bin/wifi`;
 Windows adds the installed app directory to the current user's `PATH`; the
 macOS package installs it as `/usr/local/bin/wifi`.
+
+The [Wi-Fi Connect download page](https://oblivionium.github.io/wifi-connect/)
+detects your operating system and offers the matching installer from the latest
+GitHub release.
 
 ### Linux
 
@@ -181,8 +185,10 @@ Presently, the college has phased out this portal, so the `v0.2.0` and older log
 
 ## Contact
 
-[Daksh Jain on LinkedIn](https://www.linkedin.com/in/daksh-/)
+[![Daksh Jain on LinkedIn](https://img.shields.io/badge/LinkedIn-Daksh%20Jain-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/daksh-/)
 
 ## Licence
+
+[![MIT License](https://img.shields.io/badge/License-MIT-8BC34A?style=flat-square)](LICENSE)
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).

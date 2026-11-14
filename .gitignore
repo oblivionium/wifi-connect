@@ -17,6 +17,7 @@ node_modules/
 dist/
 !desktop/dist/
 !desktop/dist/**
+desktop/dist/wifi.png
 release/
 coverage/
 desktop/src-tauri/gen/

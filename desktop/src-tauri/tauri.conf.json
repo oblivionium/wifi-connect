@@ -5,7 +5,8 @@
   "identifier": "edu.lnmiit.college-wifi",
   "build": {
     "frontendDist": "../dist",
-    "beforeBuildCommand": "npm run build:cli"
+    "beforeDevCommand": "npm run prepare:assets",
+    "beforeBuildCommand": "npm run prepare:assets && npm run build:cli"
   },
   "app": {
     "withGlobalTauri": true,

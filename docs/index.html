@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101511" />
+    <meta
+      name="description"
+      content="Download the latest Wi-Fi Connect desktop app and CLI for Windows, macOS, or Linux."
+    />
+    <title>Download Wi-Fi Connect</title>
+    <link rel="icon" href="assets/wifi.ico" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to downloads</a>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Wi-Fi Connect downloads home">
+        <img src="assets/wifi.png" alt="" width="40" height="40" />
+        <span>Wi-Fi Connect</span>
+      </a>
+      <a
+        class="header-link"
+        href="https://github.com/Oblivionium/wifi-connect/releases"
+        >Release notes <span aria-hidden="true">↗</span></a
+      >
+    </header>
+
+    <main id="main" class="page-shell">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Desktop app + CLI</p>
+        <h1 id="page-title">Wi-Fi Connect, <span>ready to download.</span></h1>
+        <p class="intro-copy">
+          Get the latest installer for your computer. The desktop app and the
+          <code>wifi</code> command-line tool are included together.
+        </p>
+
+        <aside class="portal-note" aria-label="Portal availability notice">
+          <span class="note-mark" aria-hidden="true">i</span>
+          <div>
+            <h2>About the campus portal</h2>
+            <p>
+              The college has phased out the portal this app targets. Login may
+              not work unless that portal returns or changes.
+            </p>
+            <a href="https://github.com/Oblivionium/wifi-connect#security">
+              Read the project notes <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </aside>
+
+        <p class="platform-caption">
+          Available for Windows, macOS, and Linux
+          <span aria-hidden="true">·</span> Installers include the CLI
+        </p>
+      </section>
+
+      <section class="download-card" aria-labelledby="installer-title">
+        <div class="card-brand-row">
+          <img src="assets/wifi.png" alt="" width="52" height="52" />
+          <div>
+            <p id="platform-label" class="card-eyebrow">Finding your platform</p>
+            <p id="release-version" class="release-version">Latest release</p>
+          </div>
+        </div>
+
+        <h2 id="installer-title">Checking for the latest installer…</h2>
+        <p id="installer-description" class="installer-description">
+          Looking up the newest release on GitHub.
+        </p>
+
+        <a
+          id="download-button"
+          class="download-button"
+          href="https://github.com/Oblivionium/wifi-connect/releases/latest"
+        >
+          <span id="download-label">Browse latest release</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M5 17v3h14v-3" />
+          </svg>
+        </a>
+
+        <p id="download-status" class="download-status" role="status" aria-live="polite">
+          Checking GitHub Releases…
+        </p>
+
+        <div class="card-divider"></div>
+        <div class="other-header">
+          <h3>All platform downloads</h3>
+          <span id="other-release-label">Latest release</span>
+        </div>
+        <div id="platform-downloads" class="platform-downloads">
+          <p class="download-list-note">Loading installers…</p>
+        </div>
+        <a
+          class="all-releases-link"
+          href="https://github.com/Oblivionium/wifi-connect/releases/latest"
+        >
+          Browse all releases <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Wi-Fi Connect</span>
+      <nav aria-label="Project links">
+        <a href="https://github.com/Oblivionium/wifi-connect">Source code</a>
+        <a href="https://github.com/Oblivionium/wifi-connect/releases">Releases</a>
+      </nav>
+    </footer>
+  </body>
+</html>
