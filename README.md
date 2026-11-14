@@ -184,13 +184,15 @@ been validated against it.
 
 ## Contact
 
-<a href="https://www.linkedin.com/in/daksh-/">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="22" alt="LinkedIn logo" />
-  <strong> Daksh Jain on LinkedIn</strong>
-</a>
+<div align="center">
+  <a href="https://www.linkedin.com/in/daksh-/">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="56" alt="LinkedIn logo" /><br />
+    <strong>Daksh Jain on LinkedIn</strong>
+  </a>
+</div>
 
 ## Licence
 
-[![MIT License](https://commons.wikimedia.org/wiki/Special:FilePath/License_icon-mit-88x31.svg)](LICENSE)
+[![MIT License](https://commons.wikimedia.org/wiki/Special:FilePath/License_icon-mit.svg)](LICENSE)
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
