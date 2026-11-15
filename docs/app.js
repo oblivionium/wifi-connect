@@ -102,8 +102,8 @@ function showRelease(release) {
   }
 
   installerTitle.textContent = `${platform.label} installer`;
-  const architecture = formatArchitecture(selectedAsset.name, platform.key);
-  installerDescription.textContent = `${architecture ? `${architecture} installer. ` : ""}The desktop app and wifi CLI are included.`;
+  installerDescription.textContent = "";
+  installerDescription.hidden = true;
   setPrimaryLink(selectedAsset.url, `Download for ${platform.label}`);
   setStatus(`Ready from the latest release${releaseDate ? ` published ${releaseDate}` : ""}.`, "success");
 }
@@ -141,16 +141,6 @@ function chooseAsset(assets) {
   if (scored.length > 1 && scored[0].score === scored[1].score) return null;
   if (scored[0].score < 1) return null;
   return scored[0].asset;
-}
-
-function formatArchitecture(filename, platformKey) {
-  const name = filename.toLowerCase();
-  if (/aarch64|arm64/.test(name)) {
-    return platformKey === "macos" ? "Apple Silicon (ARM64)" : "ARM64";
-  }
-  if (/x64|amd64|x86_64/.test(name)) return "64-bit";
-  if (/x86|i386|i686/.test(name)) return "32-bit";
-  return "";
 }
 
 function getArchitectureHint() {
