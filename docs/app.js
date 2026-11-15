@@ -101,6 +101,7 @@ function showRelease(release) {
     return;
   }
 
+  platformLabel.hidden = true;
   installerTitle.textContent = `${platform.label} installer`;
   installerDescription.textContent = "";
   installerDescription.hidden = true;
