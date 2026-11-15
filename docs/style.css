@@ -97,6 +97,7 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
   z-index: 10;
   top: calc(100% + 11px);
   right: -4px;
+  appearance: none;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -108,12 +109,17 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
   background: #202a21;
   box-shadow: 0 12px 32px #0008, inset 0 1px 0 #ffffff0a;
   color: #e5edde;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 700;
   line-height: 1.3;
-  pointer-events: none;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
   transform-origin: calc(100% - 23px) 0;
 }
+.star-callout:hover { border-color: #d3f5b080; background: #29362a; }
+.star-callout:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
 .star-callout::before {
   position: absolute;
   top: -5px;

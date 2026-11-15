@@ -69,8 +69,8 @@ installer. Every installer includes the `wifi` CLI. Choose your platform below
 for installation steps.
 
 <div align="center">
-  <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer">
-    <img alt="Get installer" src="assets/get-installer.svg" width="176" height="42" />
+  <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer" title="Open the Wi-Fi Connect download page">
+    <img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download%20page&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" />
   </a>
 </div>
 

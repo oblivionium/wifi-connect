@@ -243,19 +243,19 @@ function formatDate(value) {
 }
 
 function scheduleStarCallout() {
-  let hideTimer;
-  let initialTimer;
-  let repeatTimer;
+  let showTimer;
+  let hideAnimationTimer;
   let repoLinkOpened = false;
   let pageBlurredAfterRepoClick = false;
   let calloutDue = false;
+  const repeatDelay = 5 * 60 * 1000;
 
   function hideCallout() {
     if (starCallout.hidden) return;
-    window.clearTimeout(hideTimer);
+    window.clearTimeout(hideAnimationTimer);
     starCallout.classList.remove("is-visible");
     starCallout.classList.add("is-hiding");
-    window.setTimeout(() => {
+    hideAnimationTimer = window.setTimeout(() => {
       starCallout.hidden = true;
       starCallout.setAttribute("aria-hidden", "true");
       starCallout.classList.remove("is-hiding");
@@ -268,21 +268,29 @@ function scheduleStarCallout() {
       return;
     }
     calloutDue = false;
-    window.clearTimeout(hideTimer);
     starCallout.hidden = false;
     starCallout.setAttribute("aria-hidden", "false");
     starCallout.classList.remove("is-hiding", "is-visible");
     void starCallout.offsetWidth;
     starCallout.classList.add("is-visible");
-    hideTimer = window.setTimeout(hideCallout, 8000);
+  }
+
+  function scheduleNextAppearance() {
+    window.clearTimeout(showTimer);
+    calloutDue = false;
+    showTimer = window.setTimeout(showCallout, repeatDelay);
+  }
+
+  function dismissCallout() {
+    hideCallout();
+    scheduleNextAppearance();
   }
 
   function handleReturnToPage() {
     if (!document.hidden && repoLinkOpened && pageBlurredAfterRepoClick) {
-      hideCallout();
+      dismissCallout();
       repoLinkOpened = false;
       pageBlurredAfterRepoClick = false;
-      calloutDue = false;
       return true;
     }
     return false;
@@ -296,7 +304,9 @@ function scheduleStarCallout() {
   githubLinkButton.addEventListener("click", () => {
     repoLinkOpened = true;
     pageBlurredAfterRepoClick = false;
+    dismissCallout();
   });
+  starCallout.addEventListener("click", dismissCallout);
 
   window.addEventListener("blur", () => {
     if (repoLinkOpened) pageBlurredAfterRepoClick = true;
@@ -308,14 +318,10 @@ function scheduleStarCallout() {
     if (!document.hidden) handlePageFocus();
   });
 
-  initialTimer = window.setTimeout(() => {
-    showCallout();
-    repeatTimer = window.setInterval(showCallout, 5 * 60 * 1000);
-  }, 60 * 1000);
+  showTimer = window.setTimeout(showCallout, 2 * 1000);
 
   window.addEventListener("pagehide", () => {
-    window.clearTimeout(initialTimer);
-    window.clearTimeout(hideTimer);
-    window.clearInterval(repeatTimer);
+    window.clearTimeout(showTimer);
+    window.clearTimeout(hideAnimationTimer);
   }, { once: true });
 }
