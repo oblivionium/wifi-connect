@@ -3,8 +3,20 @@ name: Desktop builds
 on:
   push:
     branches: [main]
+    paths:
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "src/**"
+      - "assets/wifi.png"
+      - "desktop/**"
   pull_request:
     branches: [main]
+    paths:
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "src/**"
+      - "assets/wifi.png"
+      - "desktop/**"
   workflow_dispatch:
 
 jobs:

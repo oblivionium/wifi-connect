@@ -88,9 +88,9 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
 
 .header-actions { display: flex; align-items: center; gap: 9px; }
 .github-link-wrap { position: relative; }
-.github-icon-button { display: grid; place-items: center; width: 42px; height: 42px; border: 0; border-radius: 13px; background: transparent; color: #dce6d9; transition: background .18s ease, color .18s ease; }
-.github-icon-button:hover { background: #d3f5b014; color: var(--lime); }
-.github-icon-button svg { display: block; width: 23px; height: 23px; fill: currentColor; }
+.github-logo-link { display: grid; place-items: center; width: 44px; height: 44px; color: #dce6d9; transition: color .18s ease; }
+.github-logo-link:hover, .github-logo-link:focus-visible { color: var(--lime); outline: none; }
+.github-logo-link svg { display: block; width: 26px; height: 26px; fill: currentColor; }
 .star-mark { color: var(--lime); font-size: 15px; line-height: 1; }
 .star-callout {
   position: absolute;
@@ -118,9 +118,10 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
   cursor: pointer;
   transition: background .18s ease;
   transform-origin: calc(100% - 25px) 0;
+  outline: none;
 }
 .star-callout:hover { background: #29362a; }
-.star-callout:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+.star-callout:focus-visible { background: #29362a; }
 .star-callout::before {
   position: absolute;
   top: -5px;
@@ -318,8 +319,8 @@ h1 span { color: var(--lime); }
   .brand { gap: 8px; font-size: 12px; }
   .brand img { width: 35px; height: 35px; }
   .header-actions { gap: 7px; }
-  .github-icon-button { width: 38px; height: 38px; border-radius: 12px; }
-  .github-icon-button svg { width: 22px; height: 22px; }
+  .github-logo-link { width: 40px; height: 40px; }
+  .github-logo-link svg { width: 24px; height: 24px; }
   .star-callout { transform-origin: calc(100% - 23px) 0; }
   .star-callout::before { right: 18px; }
   .download-card { padding: 19px; border-radius: 21px; }
