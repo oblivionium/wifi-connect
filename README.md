@@ -8,8 +8,8 @@
 Desktop app and CLI for Windows, macOS, and Linux.
 
 <p align="center">
-    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Get%20installer--5B8750?style=for-the-badge&labelColor=5B8750" alt="Get installer" /></a>&nbsp;
-    <a href="https://github.com/oblivionium/wifi-connect" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" alt="View source" /></a>
+    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer"><img src="assets/get-installer.svg" width="176" height="42" alt="Get installer" /></a>&nbsp;
+    <a href="https://github.com/oblivionium/wifi-connect" target="_blank" rel="noopener noreferrer"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width="36" height="36" alt="GitHub source" /></a>
 </p>
 
 <a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer"><img alt="Rust" src="https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white"></a>
@@ -72,7 +72,7 @@ for installation steps.
 
 <div align="center">
   <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer">
-    <img alt="Get installer" src="https://img.shields.io/badge/Get%20installer--5B8750?style=for-the-badge&labelColor=5B8750" />
+    <img alt="Get installer" src="assets/get-installer.svg" width="176" height="42" />
   </a>
 </div>
 

@@ -191,6 +191,7 @@ jobs:
     needs: [linux, windows, macos]
     runs-on: ubuntu-24.04
     permissions:
+      actions: write
       contents: write
     steps:
       - uses: actions/checkout@v4
@@ -239,16 +240,17 @@ jobs:
             if [[ -f "$notes_file" ]]; then
               gh release edit "$RELEASE_TAG" --notes-file "$notes_file"
             fi
-            exit 0
-          fi
-          if [[ -f "$notes_file" ]]; then
-            gh release create "$RELEASE_TAG" release-assets/*/* \
-              --title "Wi-Fi Connect ${RELEASE_TAG}" \
-              --verify-tag \
-              --notes-file "$notes_file"
           else
-            gh release create "$RELEASE_TAG" release-assets/*/* \
-              --title "Wi-Fi Connect ${RELEASE_TAG}" \
-              --verify-tag \
-              --generate-notes
+            if [[ -f "$notes_file" ]]; then
+              gh release create "$RELEASE_TAG" release-assets/*/* \
+                --title "Wi-Fi Connect ${RELEASE_TAG}" \
+                --verify-tag \
+                --notes-file "$notes_file"
+            else
+              gh release create "$RELEASE_TAG" release-assets/*/* \
+                --title "Wi-Fi Connect ${RELEASE_TAG}" \
+                --verify-tag \
+                --generate-notes
+            fi
           fi
+          gh workflow run pages.yml --ref main

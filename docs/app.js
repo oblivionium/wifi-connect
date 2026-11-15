@@ -1,6 +1,6 @@
 const owner = "oblivionium";
 const repository = "wifi-connect";
-const releaseApi = `https://api.github.com/repos/${owner}/${repository}/releases/latest`;
+const releaseManifest = new URL("release.json", document.baseURI);
 const releasePage = `https://github.com/${owner}/${repository}/releases/latest`;
 
 const platformNames = {
@@ -49,11 +49,8 @@ function detectPlatform() {
 
 async function loadLatestRelease() {
   try {
-    const response = await fetch(releaseApi, {
-      headers: { Accept: "application/vnd.github+json" },
-      signal: AbortSignal.timeout(9000),
-    });
-    if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
+    const response = await fetch(releaseManifest, { cache: "no-store", signal: AbortSignal.timeout(9000) });
+    if (!response.ok) throw new Error(`Release manifest returned ${response.status}`);
 
     const release = await response.json();
     if (!Array.isArray(release.assets)) throw new Error("Release assets are unavailable");
@@ -223,7 +220,7 @@ function setStatus(message, state) {
 
 function showReleaseUnavailable() {
   installerTitle.textContent = "Latest release unavailable";
-  installerDescription.textContent = "GitHub Releases could not be reached. You can still browse releases and choose an installer there.";
+  installerDescription.textContent = "Release details could not be loaded. You can still browse GitHub Releases and choose an installer there.";
   releaseVersion.textContent = "Release lookup failed";
   otherReleaseLabel.textContent = "GitHub Releases";
   platformDownloads.replaceChildren();
@@ -232,7 +229,7 @@ function showReleaseUnavailable() {
   note.textContent = "The installer list could not be loaded right now.";
   platformDownloads.append(note);
   setPrimaryLink(releasePage, "Browse latest release");
-  setStatus("Couldn’t connect to GitHub Releases. Try again in a moment.", "error");
+  setStatus("Couldn’t load release details. Try again in a moment.", "error");
 }
 
 function formatDate(value) {
