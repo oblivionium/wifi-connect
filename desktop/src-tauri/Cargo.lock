@@ -5029,6 +5029,8 @@ name = "wifi-desktop"
 version = "1.0.0"
 dependencies = [
  "chrono",
+ "reqwest 0.12.28",
+ "semver",
  "serde",
  "serde_json",
  "tauri",

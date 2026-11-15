@@ -15,6 +15,10 @@ const settingsStatus = document.querySelector("#settings-status");
 const notificationsToggle = document.querySelector("#notifications-toggle");
 const autoReloginToggle = document.querySelector("#auto-relogin");
 const shortcutButton = document.querySelector("#create-shortcut");
+const checkUpdatesButton = document.querySelector("#check-for-updates");
+const installUpdateButton = document.querySelector("#install-update");
+const updateStatus = document.querySelector("#update-status");
+let availableUpdateVersion = null;
 let isAuthenticated = null;
 let hasCredentials = false;
 let notificationsEnabled = true;
@@ -22,6 +26,9 @@ let connectionPending = false;
 let connectionExpiryTimer = null;
 const CONNECTION_WINDOW_MS = 5.5 * 60 * 60 * 1000;
 const CONNECTION_EXPIRY_KEY = "college-wifi-connection-expires-at";
+const UPDATE_CHECK_INTERVAL_MS = 30 * 24 * 60 * 60 * 1000;
+const UPDATE_CHECK_KEY = "wifi-connect-last-update-check-at";
+let updateCheckInProgress = false;
 
 function message(target, text, error = false) {
   target.textContent = text;
@@ -217,6 +224,7 @@ notificationsToggle.addEventListener("change", async () => {
     await invoke("set_notifications_enabled", { enabled: requested });
     notificationsEnabled = requested;
     message(settingsStatus, "");
+    if (requested) void maybeCheckForMonthlyUpdate();
   } catch (error) {
     notificationsToggle.checked = !requested;
     message(settingsStatus, String(error), true);
@@ -251,6 +259,95 @@ shortcutButton.addEventListener("click", async () => {
   }
 });
 
+checkUpdatesButton.addEventListener("click", async () => {
+  if (updateCheckInProgress) return;
+  updateCheckInProgress = true;
+  checkUpdatesButton.disabled = true;
+  installUpdateButton.hidden = true;
+  availableUpdateVersion = null;
+  message(updateStatus, "Checking GitHub Releases…");
+  try {
+    const update = await invoke("check_for_updates");
+    recordUpdateCheck();
+    if (!update.updateAvailable) {
+      message(updateStatus, `You're up to date (${update.currentVersion}).`);
+    } else if (!update.installerAvailable) {
+      message(updateStatus, `${update.latestVersion} is available, but no installer for this device was published.`, true);
+    } else {
+      availableUpdateVersion = update.latestVersion;
+      installUpdateButton.textContent = `Install ${update.latestVersion}`;
+      installUpdateButton.hidden = false;
+      message(updateStatus, `Version ${update.latestVersion} is available.`);
+    }
+  } catch (error) {
+    message(updateStatus, `Could not check for updates: ${String(error)}`, true);
+  } finally {
+    updateCheckInProgress = false;
+    checkUpdatesButton.disabled = false;
+  }
+});
+
+installUpdateButton.addEventListener("click", async () => {
+  if (!availableUpdateVersion) return;
+  const version = availableUpdateVersion;
+  checkUpdatesButton.disabled = true;
+  installUpdateButton.disabled = true;
+  message(updateStatus, `Downloading ${version}. The app will close when the installer opens.`);
+  try {
+    await invoke("install_update", { expectedVersion: version });
+    message(updateStatus, `Opening the ${version} installer…`);
+  } catch (error) {
+    message(updateStatus, `Could not install the update: ${String(error)}`, true);
+  } finally {
+    checkUpdatesButton.disabled = false;
+    installUpdateButton.disabled = false;
+  }
+});
+
+function recordUpdateCheck() {
+  try {
+    localStorage.setItem(UPDATE_CHECK_KEY, String(Date.now()));
+  } catch (_) {
+    // A storage restriction should not turn a successful release check into an error.
+  }
+}
+
+function updateCheckIsDue() {
+  try {
+    const lastCheck = Number(localStorage.getItem(UPDATE_CHECK_KEY));
+    const now = Date.now();
+    return !(lastCheck > 0 && now >= lastCheck && now - lastCheck < UPDATE_CHECK_INTERVAL_MS);
+  } catch (_) {
+    return true;
+  }
+}
+
+async function maybeCheckForMonthlyUpdate() {
+  if (!notificationsEnabled || updateCheckInProgress || !updateCheckIsDue()) return;
+  updateCheckInProgress = true;
+  checkUpdatesButton.disabled = true;
+  try {
+    const update = await invoke("check_for_updates");
+    recordUpdateCheck();
+    if (update.updateAvailable) {
+      let nextStep = "Check GitHub Releases for an installer for your device.";
+      if (update.installerAvailable) {
+        availableUpdateVersion = update.latestVersion;
+        installUpdateButton.textContent = `Install ${update.latestVersion}`;
+        installUpdateButton.hidden = false;
+        message(updateStatus, `Version ${update.latestVersion} is available.`);
+        nextStep = "Open Settings and choose Install to update.";
+      }
+      await sendNotification("Wi-Fi Connect update available", `${update.latestVersion} is available. ${nextStep}`);
+    }
+  } catch (_) {
+    // Try again on a later app launch or daily check if GitHub is unreachable.
+  } finally {
+    updateCheckInProgress = false;
+    checkUpdatesButton.disabled = false;
+  }
+}
+
 async function initialize() {
   const [, , savedNotifications, scheduled] = await Promise.allSettled([
     refreshPortalStatus(),
@@ -264,7 +361,13 @@ async function initialize() {
     if (notificationsEnabled && !(await notification.isPermissionGranted())) await notification.requestPermission();
   }
   if (scheduled.status === "fulfilled") autoReloginToggle.checked = scheduled.value;
+  else message(settingsStatus, `Could not refresh the auto reconnect schedule: ${String(scheduled.reason)}`, true);
+  void maybeCheckForMonthlyUpdate();
 }
 
-window.addEventListener("focus", refreshConnectionExpiry);
+window.setInterval(() => void maybeCheckForMonthlyUpdate(), 24 * 60 * 60 * 1000);
+window.addEventListener("focus", () => {
+  refreshConnectionExpiry();
+  void maybeCheckForMonthlyUpdate();
+});
 initialize();

@@ -8,15 +8,15 @@
 Desktop app and CLI for Windows, macOS, and Linux.
 
 <p align="center">
-    <a href="https://oblivionium.github.io/wifi-connect/"><img src="https://img.shields.io/badge/Get%20installer-Choose%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" alt="Get installer" /></a>&nbsp;
-    <a href="https://github.com/oblivionium/wifi-connect"><img src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" alt="View source" /></a>
+    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Get%20installer--5B8750?style=for-the-badge&labelColor=5B8750" alt="Get installer" /></a>&nbsp;
+    <a href="https://github.com/oblivionium/wifi-connect" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" alt="View source" /></a>
 </p>
 
-[![Rust](https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org/)
-[![Tauri](https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/oblivionium/wifi-connect/actions)
-[![Latest release](https://img.shields.io/github/v/release/oblivionium/wifi-connect)](https://github.com/oblivionium/wifi-connect/releases/latest)
+<a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer"><img alt="Rust" src="https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white"></a>
+<a href="https://tauri.app/" target="_blank" rel="noopener noreferrer"><img alt="Tauri" src="https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer"><img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111"></a>
+<a href="https://github.com/oblivionium/wifi-connect/actions" target="_blank" rel="noopener noreferrer"><img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white"></a>
+<a href="https://github.com/oblivionium/wifi-connect/releases/latest" target="_blank" rel="noopener noreferrer"><img alt="Latest release" src="https://img.shields.io/github/v/release/oblivionium/wifi-connect"></a>
 
 [Features](#features) · [Technology](#technology) · [Installation](#installation) · [Usage](#usage) · [Build](#build-from-source) · [Security](#security)
 
@@ -39,6 +39,8 @@ system’s webview and does not bundle a browser engine.
   **Connect** shortcut includes the Wi-Fi name and local sign-in time.
   Notifications can be disabled in Settings.
 - **Optional auto-relogin** every 5.5 hours.
+- **Update checks** in Settings, with the matching installer offered when a
+  newer release is available.
 - **Portal logout** through the logoff endpoint.
 - **CLI commands** for `wifi login`, `wifi logout`, and `wifi credentials set`.
 
@@ -46,13 +48,13 @@ system’s webview and does not bundle a browser engine.
 
 <div align="center">
 
-<a href="https://www.rust-lang.org/"><img alt="Rust" height="38" src="https://img.shields.io/badge/Rust-CE422B?style=for-the-badge&logo=rust&logoColor=white"></a>
-<a href="https://tauri.app/"><img alt="Tauri 2" height="38" src="https://img.shields.io/badge/Tauri_2-24C8DB?style=for-the-badge&logo=tauri&logoColor=white"></a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img alt="HTML" height="38" src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"></a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><img alt="CSS" height="38" src="https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white"></a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img alt="JavaScript" height="38" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111"></a>
-<a href="https://github.com/seanmonstar/reqwest"><img alt="reqwest" height="38" src="https://img.shields.io/badge/reqwest-HTTP_client-59636E?style=for-the-badge"></a>
-<a href="https://github.com/RustCrypto/RSA"><img alt="RustCrypto RSA" height="38" src="https://img.shields.io/badge/RustCrypto-RSA-59636E?style=for-the-badge"></a>
+<a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer"><img alt="Rust" height="38" src="https://img.shields.io/badge/Rust-CE422B?style=for-the-badge&logo=rust&logoColor=white"></a>
+<a href="https://tauri.app/" target="_blank" rel="noopener noreferrer"><img alt="Tauri 2" height="38" src="https://img.shields.io/badge/Tauri_2-24C8DB?style=for-the-badge&logo=tauri&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer"><img alt="HTML" height="38" src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer"><img alt="CSS" height="38" src="https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer"><img alt="JavaScript" height="38" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111"></a>
+<a href="https://github.com/seanmonstar/reqwest" target="_blank" rel="noopener noreferrer"><img alt="reqwest" height="38" src="https://img.shields.io/badge/reqwest-HTTP_client-59636E?style=for-the-badge"></a>
+<a href="https://github.com/RustCrypto/RSA" target="_blank" rel="noopener noreferrer"><img alt="RustCrypto RSA" height="38" src="https://img.shields.io/badge/RustCrypto-RSA-59636E?style=for-the-badge"></a>
 
 </div>
 
@@ -69,8 +71,8 @@ installer. Every installer includes the `wifi` CLI. Choose your platform below
 for installation steps.
 
 <div align="center">
-  <a href="https://oblivionium.github.io/wifi-connect/">
-    <img alt="Get installer for your OS" src="https://img.shields.io/badge/Get%20installer-Download%20for%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" />
+  <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer">
+    <img alt="Get installer" src="https://img.shields.io/badge/Get%20installer--5B8750?style=for-the-badge&labelColor=5B8750" />
   </a>
 </div>
 
@@ -104,7 +106,8 @@ inside. It installs Wi-Fi Connect in Applications and the `wifi` command in
 2. Enter your college username and password, then save them.
 3. Return to the main page and press **Connect**.
 4. Hover or click the Wi-Fi logo to open Connect, Credentials, and Settings.
-   Use Settings to enable notifications or 5.5-hour automatic relogin.
+   Use Settings to enable notifications, 5.5-hour automatic relogin, or check
+   for the latest release.
 
 The desktop shortcut and platform launcher connect without opening the settings
 window. A successful **Connect** shortcut notification shows the connected
@@ -156,6 +159,12 @@ Installers are written under `desktop/src-tauri/target/release/bundle/`.
 GitHub Actions builds and smoke-checks the Windows installer and packages
 Windows and macOS installers on their native runners.
 
+## Updates
+
+Use **Check for updates** in Settings to compare against the latest GitHub
+release and open the matching system installer. The app also checks about once
+a month and sends a native notification when a newer release is available.
+
 ## Security
 
 Credentials are stored in the operating system’s credential store.
@@ -181,7 +190,7 @@ attacker to impersonate the portal. This is a problem at the IT Department's end
 ## Contact
 
 <div align="center">
-<a href="https://www.linkedin.com/in/daksh-/">
+<a href="https://www.linkedin.com/in/daksh-/" target="_blank" rel="noopener noreferrer">
   <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="56" alt="LinkedIn logo" /><br />
   <strong>Daksh Jain on LinkedIn</strong>
 </a>

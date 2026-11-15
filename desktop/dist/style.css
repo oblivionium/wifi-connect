@@ -78,6 +78,7 @@ main { display: grid; min-height: calc(100vh - 72px); place-items: center; paddi
 .switch input:checked + i::after { transform: translateX(18px); background: var(--lime); }
 .switch input:focus-visible + i { box-shadow: 0 0 0 3px #d3f5b025; }
 .shortcut-action { margin-top: 10px; background: #242d24; color: var(--lime); }
+.update-action { margin-top: 3px; }
 .shortcut-action:disabled, .form-action:disabled { opacity: .5; cursor: wait; }
 
 @media (prefers-reduced-motion: reduce) {

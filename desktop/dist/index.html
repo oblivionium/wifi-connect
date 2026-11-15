@@ -44,6 +44,9 @@
       <section id="page-settings" class="page settings-page" aria-label="Settings" hidden>
         <label class="setting-row"><span>Notifications</span><span class="switch"><input id="notifications-toggle" type="checkbox" /><i></i></span></label>
         <label class="setting-row"><span>Auto reconnect</span><span class="switch"><input id="auto-relogin" type="checkbox" /><i></i></span></label>
+        <button id="check-for-updates" class="shortcut-action update-action" type="button">Check for updates</button>
+        <button id="install-update" class="shortcut-action update-action" type="button" hidden>Install update</button>
+        <p id="update-status" class="message" aria-live="polite"></p>
         <button id="create-shortcut" class="shortcut-action" type="button">Create shortcut</button>
         <p id="settings-status" class="message" aria-live="polite"></p>
       </section>

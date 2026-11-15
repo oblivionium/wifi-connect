@@ -112,7 +112,7 @@ function showRelease(release) {
 function classifyAsset(name) {
   const filename = name.toLowerCase();
   if (/\.(exe|msi)$/.test(filename)) return "windows";
-  if (/\.(dmg|pkg)$/.test(filename)) return "macos";
+  if (/\.dmg$/.test(filename)) return "macos";
   if (/\.(deb|rpm|appimage)$/.test(filename)) return "linux";
   return null;
 }

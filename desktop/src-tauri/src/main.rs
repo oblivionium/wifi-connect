@@ -3,6 +3,7 @@
 mod notification;
 mod preferences;
 mod schedule;
+mod update;
 
 use tauri::{Manager, Wry};
 use tauri_plugin_notification::NotificationExt;
@@ -69,8 +70,13 @@ async fn portal_authenticated() -> Result<bool, String> {
 }
 
 #[tauri::command]
-fn auto_relogin_enabled() -> bool {
-    schedule::enabled()
+fn auto_relogin_enabled() -> Result<bool, String> {
+    let enabled = schedule::enabled();
+    if enabled {
+        // Reapply the schedule so existing installs pick up scheduler fixes and paths.
+        schedule::set_enabled(true)?;
+    }
+    Ok(enabled)
 }
 
 #[tauri::command]
@@ -168,7 +174,9 @@ fn main() {
             set_auto_relogin,
             create_connect_shortcut,
             notifications_enabled,
-            set_notifications_enabled
+            set_notifications_enabled,
+            update::check_for_updates,
+            update::install_update
         ])
         .run(tauri::generate_context!())
         .expect("failed to start Wi-Fi Connect");
