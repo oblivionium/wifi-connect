@@ -116,6 +116,7 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
   text-align: left;
   white-space: nowrap;
   cursor: pointer;
+  transition: background .18s ease, border-color .18s ease;
   transform-origin: calc(100% - 23px) 0;
 }
 .star-callout:hover { border-color: #d3f5b080; background: #29362a; }
@@ -131,7 +132,10 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
   background: #202a21;
   content: "";
   transform: rotate(45deg);
+  transition: background .18s ease, border-color .18s ease;
 }
+.star-callout:hover::before,
+.star-callout:focus-visible::before { border-color: #d3f5b080; background: #29362a; }
 .star-callout[hidden] { display: none; }
 .star-callout.is-visible { animation: star-callout-in 320ms cubic-bezier(.2,.8,.2,1) both; }
 .star-callout.is-hiding { animation: star-callout-out 180ms ease both; }
