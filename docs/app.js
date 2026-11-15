@@ -186,6 +186,8 @@ function renderPlatformDownloads(assets) {
       const link = document.createElement("a");
       link.className = "platform-option";
       link.href = asset.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
       link.setAttribute("aria-label", `Download ${asset.name} for ${platformNames[platformKey]}`);
 
       const mark = document.createElement("span");

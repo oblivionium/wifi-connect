@@ -84,7 +84,7 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
   transition: color .18s ease;
 }
 
-.header-link:hover, .all-releases-link:hover, .portal-note a:hover, .site-footer a:hover { color: var(--lime); }
+.header-link:hover, .all-releases-link:hover, .site-footer a:hover { color: var(--lime); }
 
 .page-shell {
   display: grid;
@@ -147,36 +147,6 @@ h1 span { color: var(--lime); }
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: .9em;
 }
-
-.portal-note {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  gap: 12px;
-  max-width: 470px;
-  margin-top: 34px;
-  padding: 17px 18px;
-  border: 1px solid #d3f5b01b;
-  border-radius: 17px;
-  background: #182019b8;
-}
-
-.note-mark {
-  display: grid;
-  place-items: center;
-  width: 25px;
-  height: 25px;
-  margin-top: 1px;
-  border-radius: 50%;
-  background: #d3f5b018;
-  color: var(--lime);
-  font-family: Georgia, serif;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.portal-note h2 { margin: 0 0 5px; color: #dfe8db; font-size: 12px; font-weight: 700; }
-.portal-note p { margin: 0; color: #9da99a; font-size: 11px; line-height: 1.65; }
-.portal-note a { display: inline-block; margin-top: 8px; color: #c7d4c1; font-size: 10px; font-weight: 700; text-decoration: none; }
 
 .platform-caption {
   margin: 19px 0 0;
@@ -290,7 +260,6 @@ h1 span { color: var(--lime); }
   .intro { max-width: none; }
   h1 { max-width: 470px; margin-top: 19px; font-size: clamp(42px, 11vw, 56px); }
   .intro-copy { max-width: 440px; font-size: 14px; }
-  .portal-note { margin-top: 25px; }
   .platform-caption { margin-top: 14px; }
   .download-card { width: 100%; }
   .site-footer { min-height: 63px; }

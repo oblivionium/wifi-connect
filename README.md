@@ -9,10 +9,10 @@ Desktop app and CLI for Windows, macOS, and Linux.
 
 <p>
   <a href="https://oblivionium.github.io/wifi-connect/">
-    <img alt="Get installer for your OS" src="https://img.shields.io/badge/Get%20installer-Choose%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" />
+    <img alt="Get installer for your OS" align="middle" src="https://img.shields.io/badge/Get%20installer-Choose%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" />
   </a>
   <a href="https://github.com/Oblivionium/wifi-connect">
-    <img alt="View source on GitHub" src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" />
+    <img alt="View source on GitHub" align="middle" src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" />
   </a>
 </p>
 
@@ -167,9 +167,6 @@ private IP address, and the client disables certificate validation for this
 endpoint. This does not verify the server’s identity and could allow a network
 attacker to impersonate the portal. This is a problem at the IT Department's end.
 
-The college has reactivated this portal, but the `v0.2.0` login flow has not yet
-been validated against it.
-
 ## Project layout
 
 | Path | Purpose |
@@ -185,14 +182,16 @@ been validated against it.
 ## Contact
 
 <div align="center">
-  <a href="https://www.linkedin.com/in/daksh-/">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="56" alt="LinkedIn logo" /><br />
-    <strong>Daksh Jain on LinkedIn</strong>
-  </a>
+<a href="https://www.linkedin.com/in/daksh-/">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="56" alt="LinkedIn logo" /><br />
+  <strong>Daksh Jain on LinkedIn</strong>
+</a>
 </div>
 
 ## Licence
 
-[![MIT License](https://commons.wikimedia.org/wiki/Special:FilePath/License_icon-mit.svg)](LICENSE)
+<a href="LICENSE">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/License_icon-mit.svg" width="64" alt="MIT License logo" />
+</a>
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
