@@ -106,7 +106,7 @@ function showRelease(release) {
   installerDescription.textContent = "";
   installerDescription.hidden = true;
   setPrimaryLink(selectedAsset.url, `Download for ${platform.label}`);
-  setStatus(`Ready from the latest release${releaseDate ? ` published ${releaseDate}` : ""}.`, "success");
+  downloadStatus.hidden = true;
 }
 
 function classifyAsset(name) {
@@ -217,6 +217,7 @@ function setPrimaryLink(url, label) {
 }
 
 function setStatus(message, state) {
+  downloadStatus.hidden = false;
   downloadStatus.textContent = message;
   downloadStatus.dataset.state = state;
 }
