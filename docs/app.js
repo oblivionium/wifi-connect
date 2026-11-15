@@ -25,12 +25,15 @@ const downloadStatus = document.querySelector("#download-status");
 const releaseVersion = document.querySelector("#release-version");
 const otherReleaseLabel = document.querySelector("#other-release-label");
 const platformDownloads = document.querySelector("#platform-downloads");
+const githubLinkButton = document.querySelector("#github-link-button");
+const starCallout = document.querySelector("#star-callout");
 
 platformLabel.textContent = platformNames[platform.key]
   ? `Detected · ${platform.label}`
   : platform.key === "mobile" ? "Mobile device" : "Choose a platform";
 
 loadLatestRelease();
+scheduleStarCallout();
 
 function detectPlatform() {
   const platformHint = navigator.userAgentData?.platform || navigator.platform || "";
@@ -237,4 +240,82 @@ function formatDate(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
   return new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "numeric" }).format(date);
+}
+
+function scheduleStarCallout() {
+  let hideTimer;
+  let initialTimer;
+  let repeatTimer;
+  let repoLinkOpened = false;
+  let pageBlurredAfterRepoClick = false;
+  let calloutDue = false;
+
+  function hideCallout() {
+    if (starCallout.hidden) return;
+    window.clearTimeout(hideTimer);
+    starCallout.classList.remove("is-visible");
+    starCallout.classList.add("is-hiding");
+    window.setTimeout(() => {
+      starCallout.hidden = true;
+      starCallout.setAttribute("aria-hidden", "true");
+      starCallout.classList.remove("is-hiding");
+    }, 180);
+  }
+
+  function showCallout() {
+    if (document.hidden) {
+      calloutDue = true;
+      return;
+    }
+    calloutDue = false;
+    window.clearTimeout(hideTimer);
+    starCallout.hidden = false;
+    starCallout.setAttribute("aria-hidden", "false");
+    starCallout.classList.remove("is-hiding", "is-visible");
+    void starCallout.offsetWidth;
+    starCallout.classList.add("is-visible");
+    hideTimer = window.setTimeout(hideCallout, 8000);
+  }
+
+  function handleReturnToPage() {
+    if (!document.hidden && repoLinkOpened && pageBlurredAfterRepoClick) {
+      hideCallout();
+      repoLinkOpened = false;
+      pageBlurredAfterRepoClick = false;
+      calloutDue = false;
+      return true;
+    }
+    return false;
+  }
+
+  function handlePageFocus() {
+    const returnedFromRepo = handleReturnToPage();
+    if (!returnedFromRepo && calloutDue) showCallout();
+  }
+
+  githubLinkButton.addEventListener("click", () => {
+    repoLinkOpened = true;
+    pageBlurredAfterRepoClick = false;
+  });
+
+  window.addEventListener("blur", () => {
+    if (repoLinkOpened) pageBlurredAfterRepoClick = true;
+  });
+
+  window.addEventListener("focus", handlePageFocus);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && repoLinkOpened) pageBlurredAfterRepoClick = true;
+    if (!document.hidden) handlePageFocus();
+  });
+
+  initialTimer = window.setTimeout(() => {
+    showCallout();
+    repeatTimer = window.setInterval(showCallout, 5 * 60 * 1000);
+  }, 60 * 1000);
+
+  window.addEventListener("pagehide", () => {
+    window.clearTimeout(initialTimer);
+    window.clearTimeout(hideTimer);
+    window.clearInterval(repeatTimer);
+  }, { once: true });
 }

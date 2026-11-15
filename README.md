@@ -1,15 +1,13 @@
 <div align="center">
 
-<img src="assets/wifi.png" width="96" alt="Wi-Fi Connect mark" />
+<a href="https://github.com/oblivionium/wifi-connect" target="_blank" rel="noopener noreferrer"><img src="assets/wifi.png" width="96" alt="Wi-Fi Connect on GitHub" /></a>
 
 # Wi-Fi Connect
 
-**Campus Wi-Fi sign-in for your desktop**<br />
-Desktop app and CLI for Windows, macOS, and Linux.
+**A simple wifi login utility which reconnects you to the campus wifi.**
 
 <p align="center">
-    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer"><img src="assets/get-installer.svg" width="176" height="42" alt="Get installer" /></a>&nbsp;
-    <a href="https://github.com/oblivionium/wifi-connect" target="_blank" rel="noopener noreferrer"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width="36" height="36" alt="GitHub source" /></a>
+    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer" title="Open the Wi-Fi Connect download page"><img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download%20page&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" /></a>
 </p>
 
 <a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer"><img alt="Rust" src="https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white"></a>
