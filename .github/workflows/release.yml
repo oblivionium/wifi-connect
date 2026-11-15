@@ -186,6 +186,28 @@ jobs:
         with:
           path: release-assets
 
+      - name: Prefix installer names with the release tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${RELEASE_TAG#v}"
+          for asset in release-assets/*/*; do
+            [[ -f "$asset" ]] || continue
+            directory="${asset%/*}"
+            filename="${asset##*/}"
+            case "$filename" in
+              *"_${version}_"*|*"_${version}."*)
+                renamed="${filename/"_${version}"/"_v${version}"}"
+                mv -- "$asset" "$directory/$renamed"
+                ;;
+              *)
+                echo "Release version is missing from asset name: $filename" >&2
+                exit 1
+                ;;
+            esac
+          done
+
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
