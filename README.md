@@ -7,7 +7,7 @@
 **A simple wifi login utility which reconnects you to the campus wifi.**
 
 <p align="center">
-    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer" title="Open the Wi-Fi Connect download page"><img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download%20page&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" /></a>
+    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer" title="Open the Wi-Fi Connect download page"><img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" /></a>
 </p>
 
 <a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer"><img alt="Rust" src="https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white"></a>
@@ -68,11 +68,11 @@ The download page detects your operating system and offers the latest matching
 installer. Every installer includes the `wifi` CLI. Choose your platform below
 for installation steps.
 
-<div align="center">
+<p align="center">
   <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer" title="Open the Wi-Fi Connect download page">
-    <img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download%20page&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" />
+    <img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" />
   </a>
-</div>
+</p>
 
 ### Linux
 

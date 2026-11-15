@@ -20,6 +20,7 @@ concurrency:
 jobs:
   deploy:
     permissions:
+      actions: read
       contents: read
       pages: write
       id-token: write
@@ -29,9 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Assemble site files
         run: |
           mkdir -p _site/assets
@@ -51,9 +52,9 @@ jobs:
             jq '{tag_name, published_at, assets: [.assets[] | {name, browser_download_url, size}]}' \
               > _site/release.json
       - name: Upload site files
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
       - name: Deploy site
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
