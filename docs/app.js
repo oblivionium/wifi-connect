@@ -105,6 +105,7 @@ function showRelease(release) {
   installerTitle.textContent = `${platform.label} installer`;
   installerDescription.textContent = "";
   installerDescription.hidden = true;
+  downloadButton.closest(".download-card").classList.add("is-platform-ready");
   setPrimaryLink(selectedAsset.url, `Download for ${platform.label}`);
   downloadStatus.hidden = true;
 }

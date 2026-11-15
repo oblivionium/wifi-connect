@@ -90,7 +90,7 @@ a:focus-visible { outline: 2px solid var(--lime); outline-offset: 4px; }
 .github-link-wrap { position: relative; }
 .github-logo-link { display: grid; place-items: center; width: 44px; height: 44px; color: #dce6d9; transition: color .18s ease; }
 .github-logo-link:hover, .github-logo-link:focus-visible { color: var(--lime); outline: none; }
-.github-logo-link svg { display: block; width: 26px; height: 26px; fill: currentColor; }
+.github-logo-link svg { display: block; width: 30px; height: 30px; fill: currentColor; }
 .star-mark { color: var(--lime); font-size: 15px; line-height: 1; }
 .star-callout {
   position: absolute;
@@ -230,6 +230,8 @@ h1 span { color: var(--lime); }
   line-height: 1.25;
 }
 
+.download-card.is-platform-ready #installer-title { margin: 0 17px 14px; }
+
 .installer-description { min-height: 36px; margin: 8px 0 20px; color: #9da99a; font-size: 11px; line-height: 1.65; }
 
 .download-button {
@@ -248,6 +250,7 @@ h1 span { color: var(--lime); }
   transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
 }
 
+.download-card.is-platform-ready .download-button { width: calc(100% - 16px); margin: 0 8px; padding-inline: 9px; }
 .download-button:hover { transform: translateY(-2px); filter: brightness(1.035); box-shadow: 0 10px 25px #d3f5b020; }
 .download-button:active { transform: scale(.99); }
 .download-button[aria-disabled="true"] { cursor: progress; }
@@ -320,7 +323,7 @@ h1 span { color: var(--lime); }
   .brand img { width: 35px; height: 35px; }
   .header-actions { gap: 7px; }
   .github-logo-link { width: 40px; height: 40px; }
-  .github-logo-link svg { width: 24px; height: 24px; }
+  .github-logo-link svg { width: 28px; height: 28px; }
   .star-callout { transform-origin: calc(100% - 23px) 0; }
   .star-callout::before { right: 18px; }
   .download-card { padding: 19px; border-radius: 21px; }
