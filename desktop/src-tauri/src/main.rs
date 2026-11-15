@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod notification;
 mod preferences;
 mod schedule;
 
@@ -46,8 +47,8 @@ async fn connect() -> Result<(), String> {
 #[tauri::command]
 async fn disconnect() -> Result<(), String> {
     tauri::async_runtime::spawn_blocking(disconnect_once)
-    .await
-    .map_err(|error| format!("Disconnect worker stopped unexpectedly: {error}"))?
+        .await
+        .map_err(|error| format!("Disconnect worker stopped unexpectedly: {error}"))?
 }
 
 fn disconnect_once() -> Result<(), String> {
@@ -122,14 +123,21 @@ fn main() {
         .setup(move |app| {
             if let Some(connecting) = action {
                 let result = if connecting {
-                    connect_once().map(|_| "Connected to college Wi-Fi.")
+                    connect_once().map(|_| notification::connect_success_body())
                 } else {
-                    disconnect_once().map(|_| "Signed out of college Wi-Fi.")
+                    disconnect_once().map(|_| "Signed out of college Wi-Fi.".to_owned())
                 };
                 let succeeded = result.is_ok();
                 if preferences::notifications_enabled(app.handle()) {
                     match result {
-                        Ok(message) => notify(app.handle(), "Wi-Fi Connect", message),
+                        Ok(message) => {
+                            let title = if connecting {
+                                "College Wi-Fi Connected"
+                            } else {
+                                "Wi-Fi Connect"
+                            };
+                            notify(app.handle(), title, &message)
+                        }
                         Err(error) => notify(
                             app.handle(),
                             "Wi-Fi Connect",
@@ -137,7 +145,13 @@ fn main() {
                         ),
                     };
                 }
-                app.handle().exit(if succeeded { 0 } else { 1 });
+                let app_handle = app.handle().clone();
+                let exit_code = if succeeded { 0 } else { 1 };
+                std::thread::spawn(move || {
+                    // The notification plugin dispatches desktop notifications in the background.
+                    std::thread::sleep(std::time::Duration::from_secs(2));
+                    app_handle.exit(exit_code);
+                });
             } else if let Some(window) = app.get_webview_window("main") {
                 window.show()?;
             }

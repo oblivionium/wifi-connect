@@ -16,6 +16,7 @@ Desktop app and CLI for Windows, macOS, and Linux.
 [![Tauri](https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/Oblivionium/wifi-connect/actions)
+[![Latest release](https://img.shields.io/github/v/release/Oblivionium/wifi-connect)](https://github.com/Oblivionium/wifi-connect/releases/latest)
 
 [Features](#features) · [Technology](#technology) · [Installation](#installation) · [Usage](#usage) · [Build](#build-from-source) · [Security](#security)
 
@@ -34,8 +35,9 @@ system’s webview and does not bundle a browser engine.
 - **One-click connection** from the desktop app or a silent desktop shortcut.
 - **Credential management** in a separate page, with passwords stored in the
   operating system’s credential store.
-- **Native notifications** for connection results and scheduled relogins;
-  notifications can be disabled in Settings.
+- **Native notifications** for connection results and scheduled relogins; the
+  **Connect** shortcut includes the Wi-Fi name and local sign-in time.
+  Notifications can be disabled in Settings.
 - **Optional auto-relogin** every 5.5 hours.
 - **Portal logout** through the logoff endpoint.
 - **CLI commands** for `wifi login`, `wifi logout`, and `wifi credentials set`.
@@ -105,8 +107,9 @@ inside. It installs Wi-Fi Connect in Applications and the `wifi` command in
    Use Settings to enable notifications or 5.5-hour automatic relogin.
 
 The desktop shortcut and platform launcher connect without opening the settings
-window. Connection results appear as native notifications when notifications
-are enabled and allowed by the operating system.
+window. A successful **Connect** shortcut notification shows the connected
+Wi-Fi name and local sign-in time when notifications are enabled and allowed by
+the operating system.
 
 The CLI supports:
 

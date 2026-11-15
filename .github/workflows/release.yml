@@ -1,0 +1,205 @@
+name: Publish release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Tauri system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            build-essential \
+            curl \
+            file \
+            libayatana-appindicator3-dev \
+            libssl-dev \
+            librsvg2-dev \
+            libwebkit2gtk-4.1-dev \
+            libxdo-dev \
+            wget
+
+      - name: Install frontend dependencies
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build Linux installer
+        working-directory: desktop
+        run: npm run tauri -- build --bundles deb
+
+      - name: Upload Linux installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-amd64
+          path: desktop/src-tauri/target/release/bundle/deb/*.deb
+          if-no-files-found: error
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install NSIS
+        run: choco install nsis --no-progress -y
+
+      - name: Install frontend dependencies
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build Windows installer
+        working-directory: desktop
+        run: npm run tauri -- build --bundles nsis
+
+      - name: Smoke test the Connect shortcut
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem "desktop/src-tauri/target/release/bundle/nsis/*.exe" | Select-Object -First 1
+          if (-not $installer) { throw "NSIS installer was not produced" }
+          $install = Start-Process -FilePath $installer.FullName -ArgumentList @('/S', '/D=C:\wifi-connect-test') -Wait -PassThru
+          if ($install.ExitCode -ne 0) { throw "Installer failed with exit code $($install.ExitCode)" }
+
+          $shortcut = Join-Path $env:APPDATA 'Microsoft/Windows/Start Menu/Programs/Wi-Fi Connect/Connect.lnk'
+          if (-not (Test-Path $shortcut)) { throw "Connect shortcut was not installed: $shortcut" }
+
+          $app = 'C:\wifi-connect-test\wifi-desktop.exe'
+          $cli = 'C:\wifi-connect-test\wifi.exe'
+          if (-not (Test-Path $app)) { throw "Installed app was not found: $app" }
+          if (-not (Test-Path $cli)) { throw "Installed wifi CLI was not found: $cli" }
+
+          $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+          if (-not (($userPath -split ';') -contains 'C:\wifi-connect-test')) { throw 'Installer did not add its directory to the current user PATH' }
+          & $cli --help | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw "Installed wifi CLI --help failed with exit code $LASTEXITCODE" }
+
+          $shell = New-Object -ComObject WScript.Shell
+          $link = $shell.CreateShortcut($shortcut)
+          if ($link.TargetPath -ne $app -or $link.Arguments -ne '--connect') { throw "Connect shortcut points to the wrong target or arguments" }
+          $run = Start-Process -FilePath $app -ArgumentList '--connect' -Wait -PassThru -WindowStyle Hidden
+          if ($run.ExitCode -ne 1) { throw "Expected missing-keyring credentials to exit with status 1; got $($run.ExitCode)" }
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64
+          path: desktop/src-tauri/target/release/bundle/nsis/*.exe
+          if-no-files-found: error
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build macOS app and CLI package
+        working-directory: desktop
+        run: npm run tauri -- build --bundles dmg
+
+      - name: Package CLI in PATH with the macOS app
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_version=$(node -p "require('./desktop/package.json').version")
+          dmg_path=$(find desktop/src-tauri/target/release/bundle/dmg -maxdepth 1 -name '*.dmg' -print -quit)
+          package_root="$RUNNER_TEMP/wifi-connect-pkgroot"
+          mount_dir="$RUNNER_TEMP/wifi-connect-dmg"
+          dmg_root="$RUNNER_TEMP/wifi-connect-installer-dmg"
+          verify_mount="$RUNNER_TEMP/wifi-connect-final-dmg"
+          package_dir="desktop/src-tauri/target/release/bundle/pkg"
+          pkg_path="$package_dir/Wi-Fi Connect_${app_version}.pkg"
+          mkdir -p "$package_root/Applications" "$package_root/usr/local/bin" "$package_dir" "$mount_dir" "$dmg_root" "$verify_mount"
+          hdiutil attach "$dmg_path" -readonly -nobrowse -mountpoint "$mount_dir"
+          trap 'hdiutil detach "$mount_dir" -quiet || true' EXIT
+          ditto "$mount_dir/Wi-Fi Connect.app" "$package_root/Applications/Wi-Fi Connect.app"
+          hdiutil detach "$mount_dir" -quiet
+          trap - EXIT
+          install -m 755 desktop/src-tauri/binaries/wifi "$package_root/usr/local/bin/wifi"
+          pkgbuild --root "$package_root" --install-location / \
+            --identifier edu.lnmiit.college-wifi.install \
+            --version "$app_version" \
+            "$pkg_path"
+          cp "$pkg_path" "$dmg_root/"
+          hdiutil create -volname "Wi-Fi Connect ${app_version}" \
+            -srcfolder "$dmg_root" -ov -format UDZO "$dmg_path"
+          hdiutil attach "$dmg_path" -readonly -nobrowse -mountpoint "$verify_mount"
+          test -f "$verify_mount/Wi-Fi Connect_${app_version}.pkg"
+          hdiutil detach "$verify_mount" -quiet
+
+      - name: Upload macOS installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64
+          path: desktop/src-tauri/target/release/bundle/dmg/*.dmg
+          if-no-files-found: error
+
+  publish:
+    needs: [linux, windows, macos]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download installer artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          notes_file=".github/release-notes/${GITHUB_REF_NAME}.md"
+          if [[ -f "$notes_file" ]]; then
+            gh release create "$GITHUB_REF_NAME" release-assets/*/* \
+              --title "Wi-Fi Connect ${GITHUB_REF_NAME}" \
+              --verify-tag \
+              --notes-file "$notes_file"
+          else
+            gh release create "$GITHUB_REF_NAME" release-assets/*/* \
+              --title "Wi-Fi Connect ${GITHUB_REF_NAME}" \
+              --verify-tag \
+              --generate-notes
+          fi

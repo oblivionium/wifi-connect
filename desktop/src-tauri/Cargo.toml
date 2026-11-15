@@ -1,6 +1,6 @@
 [package]
 name = "wifi-desktop"
-version = "0.2.0"
+version = "1.0.0"
 description = "Cross-platform college Wi-Fi connection app"
 edition = "2021"
 
@@ -8,6 +8,7 @@ edition = "2021"
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
 tauri = { version = "2", features = [] }
 tauri-plugin-notification = "2"
 wifi = { path = "../.." }

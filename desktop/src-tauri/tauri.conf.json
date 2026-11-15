@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Wi-Fi Connect",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "identifier": "edu.lnmiit.college-wifi",
   "build": {
     "frontendDist": "../dist",
