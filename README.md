@@ -7,14 +7,9 @@
 **Campus Wi-Fi sign-in for your desktop**<br />
 Desktop app and CLI for Windows, macOS, and Linux.
 
-<p>
-  <a href="https://oblivionium.github.io/wifi-connect/">
-    <img alt="Get installer for your OS" align="middle" src="https://img.shields.io/badge/Get%20installer-Choose%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" />
-  </a>
-  
-  <a href="https://github.com/Oblivionium/wifi-connect">
-    <img alt="View source on GitHub" align="middle" src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" />
-  </a>
+<p align="center">
+    <a href="https://oblivionium.github.io/wifi-connect/"><img src="https://img.shields.io/badge/Get%20installer-Choose%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" alt="Get installer" /></a>&nbsp;
+    <a href="https://github.com/Oblivionium/wifi-connect"><img src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" alt="View source" /></a>
 </p>
 
 [![Rust](https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org/)
