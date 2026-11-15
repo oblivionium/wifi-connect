@@ -16,17 +16,15 @@
 <a href="https://github.com/oblivionium/wifi-connect/actions" target="_blank" rel="noopener noreferrer"><img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white"></a>
 <a href="https://github.com/oblivionium/wifi-connect/releases/latest" target="_blank" rel="noopener noreferrer"><img alt="Latest release" src="https://img.shields.io/github/v/release/oblivionium/wifi-connect"></a>
 
-[Features](#features) · [Technology](#technology) · [Installation](#installation) · [Usage](#usage) · [Build](#build-from-source) · [Security](#security)
-
 </div>
-
-The application implements the campus captive portal’s HTTP and RSA login flow
-on Windows, macOS, and Linux. The desktop application uses the operating
-system’s webview and does not bundle a browser engine.
 
 ## Contents
 
+<div align="center">
+
 [Features](#features) · [Technology](#technology) · [Installation](#installation) · [Usage](#usage) · [Build from source](#build-from-source) · [Security](#security) · [Project layout](#project-layout)
+
+</div>
 
 ## Features
 
@@ -61,6 +59,10 @@ system notifications, and platform packaging. The Rust core uses `reqwest` for
 the portal session and `rsa` for password encryption. While the targeted portal
 is available, the main screen checks authentication on launch and keeps the
 connection button on for 5.5 hours or until you disconnect.
+
+The application implements the campus captive portal’s HTTP and RSA login flow
+on Windows, macOS, and Linux. The desktop application uses the operating
+system’s webview and does not bundle a browser engine.
 
 ## Installation
 
