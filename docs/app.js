@@ -1,4 +1,4 @@
-const owner = "Oblivionium";
+const owner = "oblivionium";
 const repository = "wifi-connect";
 const releaseApi = `https://api.github.com/repos/${owner}/${repository}/releases/latest`;
 const releasePage = `https://github.com/${owner}/${repository}/releases/latest`;

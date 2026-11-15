@@ -9,14 +9,14 @@ Desktop app and CLI for Windows, macOS, and Linux.
 
 <p align="center">
     <a href="https://oblivionium.github.io/wifi-connect/"><img src="https://img.shields.io/badge/Get%20installer-Choose%20your%20OS-5B8750?style=for-the-badge&labelColor=202820" alt="Get installer" /></a>&nbsp;
-    <a href="https://github.com/Oblivionium/wifi-connect"><img src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" alt="View source" /></a>
+    <a href="https://github.com/oblivionium/wifi-connect"><img src="https://img.shields.io/badge/View%20source-GitHub-374151?style=for-the-badge&logo=github&logoColor=white" alt="View source" /></a>
 </p>
 
 [![Rust](https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/Oblivionium/wifi-connect/actions)
-[![Latest release](https://img.shields.io/github/v/release/Oblivionium/wifi-connect)](https://github.com/Oblivionium/wifi-connect/releases/latest)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/oblivionium/wifi-connect/actions)
+[![Latest release](https://img.shields.io/github/v/release/oblivionium/wifi-connect)](https://github.com/oblivionium/wifi-connect/releases/latest)
 
 [Features](#features) · [Technology](#technology) · [Installation](#installation) · [Usage](#usage) · [Build](#build-from-source) · [Security](#security)
 
