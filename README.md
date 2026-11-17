@@ -1,20 +1,21 @@
 <div align="center">
 
-<a href="https://github.com/oblivionium/wifi-connect" target="_blank" rel="noopener noreferrer"><img src="assets/wifi.png" width="96" alt="Wi-Fi Connect on GitHub" /></a>
+<a href="https://github.com/oblivionium/wifi-connect"><img src="assets/wifi.png" width="96" alt="Wi-Fi Connect on GitHub"/></a>
 
 # Wi-Fi Connect
 
-**A simple wifi login utility which reconnects you to the campus wifi.**
+**A simple wifi login utility which reconnects you to the campus wifi**
 
 <p align="center">
-    <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer" title="Open the Wi-Fi Connect download page"><img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" /></a>
+<a href="https://oblivionium.github.io/wifi-connect/" title="Open the Wi-Fi Connect download page"><img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page"/></a>
 </p>
 
-<a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer"><img alt="Rust" src="https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white"></a>
-<a href="https://tauri.app/" target="_blank" rel="noopener noreferrer"><img alt="Tauri" src="https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white"></a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer"><img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111"></a>
-<a href="https://github.com/oblivionium/wifi-connect/actions" target="_blank" rel="noopener noreferrer"><img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white"></a>
-<a href="https://github.com/oblivionium/wifi-connect/releases/latest" target="_blank" rel="noopener noreferrer"><img alt="Latest release" src="https://img.shields.io/github/v/release/oblivionium/wifi-connect"></a>
+<a href="https://www.rust-lang.org/"><img alt="Rust" src="https://img.shields.io/badge/Rust-core-CE422B?style=flat-square&logo=rust&logoColor=white"></a>
+<a href="https://tauri.app/"><img alt="Tauri" src="https://img.shields.io/badge/Tauri-desktop-24C8DB?style=flat-square&logo=tauri&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-interface-F7DF1E?style=flat-square&logo=javascript&logoColor=111111"></a>
+<a href="https://github.com/oblivionium/wifi-connect/actions"><img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-builds-2088FF?style=flat-square&logo=githubactions&logoColor=white"></a>
+<br/>
+<a href="https://github.com/oblivionium/wifi-connect/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/oblivionium/wifi-connect"></a>
 
 </div>
 
@@ -44,13 +45,13 @@
 
 <div align="center">
 
-<a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer"><img alt="Rust" height="38" src="https://img.shields.io/badge/Rust-CE422B?style=for-the-badge&logo=rust&logoColor=white"></a>
-<a href="https://tauri.app/" target="_blank" rel="noopener noreferrer"><img alt="Tauri 2" height="38" src="https://img.shields.io/badge/Tauri_2-24C8DB?style=for-the-badge&logo=tauri&logoColor=white"></a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener noreferrer"><img alt="HTML" height="38" src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"></a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener noreferrer"><img alt="CSS" height="38" src="https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white"></a>
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer"><img alt="JavaScript" height="38" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111"></a>
-<a href="https://github.com/seanmonstar/reqwest" target="_blank" rel="noopener noreferrer"><img alt="reqwest" height="38" src="https://img.shields.io/badge/reqwest-HTTP_client-59636E?style=for-the-badge"></a>
-<a href="https://github.com/RustCrypto/RSA" target="_blank" rel="noopener noreferrer"><img alt="RustCrypto RSA" height="38" src="https://img.shields.io/badge/RustCrypto-RSA-59636E?style=for-the-badge"></a>
+<a href="https://www.rust-lang.org/"><img alt="Rust" height="38" src="https://img.shields.io/badge/Rust-CE422B?style=for-the-badge&logo=rust&logoColor=white"></a>
+<a href="https://tauri.app/"><img alt="Tauri 2" height="38" src="https://img.shields.io/badge/Tauri_2-24C8DB?style=for-the-badge&logo=tauri&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img alt="HTML" height="38" src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><img alt="CSS" height="38" src="https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white"></a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img alt="JavaScript" height="38" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111"></a>
+<a href="https://github.com/seanmonstar/reqwest"><img alt="reqwest" height="38" src="https://img.shields.io/badge/reqwest-HTTP_client-59636E?style=for-the-badge"></a>
+<a href="https://github.com/RustCrypto/RSA"><img alt="RustCrypto RSA" height="38" src="https://img.shields.io/badge/RustCrypto-RSA-59636E?style=for-the-badge"></a>
 
 </div>
 
@@ -71,8 +72,7 @@ installer. Every installer includes the `wifi` CLI. Choose your platform below
 for installation steps.
 
 <p align="center">
-  <a href="https://oblivionium.github.io/wifi-connect/" target="_blank" rel="noopener noreferrer" title="Open the Wi-Fi Connect download page">
-    <img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page" />
+  <a href="https://oblivionium.github.io/wifi-connect/"  title="Open the Wi-Fi Connect download page"><img src="https://img.shields.io/github/downloads/oblivionium/wifi-connect/total?label=download&style=for-the-badge&labelColor=24292f&color=5B8750&logo=github&logoColor=white" height="42" alt="GitHub release download count; open the download page"/>
   </a>
 </p>
 
@@ -190,16 +190,13 @@ attacker to impersonate the portal. This is a problem at the IT Department's end
 ## Contact
 
 <div align="center">
-<a href="https://www.linkedin.com/in/daksh-/" target="_blank" rel="noopener noreferrer">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="56" alt="LinkedIn logo" /><br />
-  <strong>Daksh Jain on LinkedIn</strong>
-</a>
+    <a href="https://www.linkedin.com/in/daksh-/"><img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" width="56" alt="LinkedIn"/><br/><strong>Daksh Jain on LinkedIn</strong></a>
 </div>
 
 ## Licence
 
 <a href="LICENSE">
-  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/License_icon-mit.svg" width="64" alt="MIT License logo" />
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/License_icon-mit.svg" width="64" alt="MIT"/>
 </a>
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
